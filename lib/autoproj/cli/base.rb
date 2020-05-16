@@ -180,18 +180,30 @@ module Autoproj
                 self.class.validate_options(args, options)
             end
 
+            def self.default_color_enabled?
+                TTY::Color.color?
+            end
+
+            def self.default_progress_mode
+                TTY::Color.color? ? 'single_line' : 'off'
+            end
+
             def self.validate_options(args, options)
                 options, remaining = filter_options options,
                     silent: false,
                     verbose: false,
                     debug: false,
-                    color: TTY::Color.color?,
-                    progress: TTY::Color.color?,
+                    color: default_color_enabled?,
+                    progress: true,
+                    progress_mode: default_progress_mode,
+                    progress_period: 1,
                     parallel: nil
 
                 Autoproj.silent = options[:silent]
                 Autobuild.color = options[:color]
                 Autobuild.progress_display_enabled = options[:progress]
+                Autobuild.progress_display_mode = options[:progress_mode]
+                Autobuild.progress_display_period = options[:progress_period]
 
                 if options[:verbose]
                     Autoproj.verbose  = true
@@ -213,7 +225,7 @@ module Autoproj
                     remaining[:parallel] = Integer(level)
                 end
 
-                return args, remaining.to_sym_keys
+                [args, remaining.transform_keys(&:to_sym)]
             end
 
             def export_env_sh(shell_helpers: ws.config.shell_helpers?)
