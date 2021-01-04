@@ -140,7 +140,7 @@ module Autoproj
 
             def key_exist?(key)
                 exist = false
-                Open3.popen3({'LANG' => 'C'}, 'apt-key', 'export', key) do |_, _, stderr, wait_thr|
+                Open3.popen3({ 'LANG' => 'C' }, 'apt-key', 'export', key) do |_, _, stderr, wait_thr|
                     success = wait_thr.value.success?
                     stderr = stderr.read
                     has_error = stderr.match(/WARNING: nothing exported/)

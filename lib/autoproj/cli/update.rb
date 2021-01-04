@@ -154,7 +154,7 @@ module Autoproj
 
                 if !options[:auto_exclude] && !options[:ignore_errors]
                     if import_failure && configuration_import_failure
-                        raise ImportFailed.new(configuration_import_failure.original_errors + import_failure.original_errors)
+                        raise ImportFailed.new(configuration_import_failure.original_errors + import_failure.original_errors), "import failed"
                     elsif import_failure
                         raise import_failure
                     elsif configuration_import_failure

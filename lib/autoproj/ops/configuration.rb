@@ -448,11 +448,11 @@ module Autoproj
             load_package_set_information(mainline: mainline)
 
             if !main_configuration_failure.empty? && !package_sets_failure.empty?
-                raise ImportFailed.new(main_configuration_failure + package_sets_failure)
+                raise ImportFailed.new(main_configuration_failure + package_sets_failure), "configuration import failed"
             elsif !main_configuration_failure.empty?
-                raise ImportFailed.new(main_configuration_failure)
+                raise ImportFailed.new(main_configuration_failure), "configuration import failed"
             elsif !package_sets_failure.empty?
-                raise ImportFailed.new(package_sets_failure)
+                raise ImportFailed.new(package_sets_failure), "configuration import failed"
             end
         end
 

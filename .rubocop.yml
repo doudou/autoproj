@@ -1,8 +1,10 @@
+inherit_from: .rubocop_todo.yml
+
 inherit_gem:
   rubocop-rock: defaults.yml
 
 AllCops:
-    TargetRubyVersion: "2.3"
+    TargetRubyVersion: "2.7"
     Exclude:
     - lib/autobuild/packages/genom.rb
     - vendor/**/*
@@ -101,10 +103,5 @@ Style/StringLiterals:
 
 Layout/HeredocIndentation:
     Enabled: false
-
-Metrics/LineLength:
-    Max: 90
-    Exclude:
-    - test/**/*
 
 

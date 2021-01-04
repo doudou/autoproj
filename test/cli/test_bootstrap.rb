@@ -27,7 +27,7 @@ module Autoproj
                 end
 
                 it "is not interactive if AUTOPROJ_NONINTERACTIVE is set" do
-                    refute_command_is_interactive({'AUTOPROJ_NONINTERACTIVE' => '1'},
+                    refute_command_is_interactive({ 'AUTOPROJ_NONINTERACTIVE' => '1' },
                         "#{Gem.ruby} "\
                         "#{File.join(@autoproj_bin_dir, "autoproj_install")} "\
                         "--gemfile '#{gemfile_aruba}'")
@@ -61,7 +61,7 @@ module Autoproj
                 end
 
                 it "does not run the check if AUTOPROJ_NONINTERACTIVE is set" do
-                    refute_command_is_interactive({'AUTOPROJ_NONINTERACTIVE' => '1'},
+                    refute_command_is_interactive({ 'AUTOPROJ_NONINTERACTIVE' => '1' },
                         "#{Gem.ruby} "\
                         "#{File.join(@autoproj_bin_dir, "autoproj_bootstrap")} "\
                         "--gemfile '#{gemfile_aruba}'")
@@ -69,7 +69,7 @@ module Autoproj
 
                 it "does not run the check if AUTOPROJ_BOOTSTRAP_IGNORE_NONEMPTY_DIR is set" do
                     output = assert_command_is_interactive(
-                        {'AUTOPROJ_BOOTSTRAP_IGNORE_NONEMPTY_DIR' => '1'},
+                        { 'AUTOPROJ_BOOTSTRAP_IGNORE_NONEMPTY_DIR' => '1' },
                         "#{Gem.ruby} "\
                         "#{File.join(@autoproj_bin_dir, "autoproj_bootstrap")} "\
                         "--gemfile '#{gemfile_aruba}'")
