@@ -539,10 +539,11 @@ module Autoproj
         end
 
         def self.find_path(xdg_var, xdg_path, home_path)
-            home_dir = begin Dir.home
-                       rescue ArgumentError
-                           return
-                       end
+            home_dir =
+                begin Dir.home
+                rescue ArgumentError
+                    return
+                end
 
             xdg_path  = File.join(XDG[xdg_var].to_path, 'autoproj', xdg_path)
             home_path = File.join(home_dir, home_path)

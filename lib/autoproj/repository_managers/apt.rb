@@ -190,7 +190,7 @@ module Autoproj
             end
 
             def filter_installed_definitions(definitions)
-                definitions = definitions.dup.reject do |definition|
+                definitions.dup.reject do |definition|
                     if definition['type'] == 'repo'
                         _, entry = source_exist?(definition['repo'])
                         entry && entry[:enabled]
@@ -198,7 +198,6 @@ module Autoproj
                         key_exist?(definition['id'])
                     end
                 end
-                definitions
             end
 
             def print_installing_definitions(definitions)

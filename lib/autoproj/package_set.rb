@@ -10,6 +10,7 @@ module Autoproj
             attr_reader :package_set
             def initialize(package_set)
                 @package_set = package_set
+                super()
             end
         end
 
@@ -485,7 +486,7 @@ module Autoproj
         def load_description_file
             source_definition = raw_description_file
             name = source_definition['name']
-            if name !~ /^[\w\.-]+$/
+            if name !~ /^[\w.-]+$/
                 raise ConfigError.new(source_file),
                       "in #{source_file}: invalid source name '#{@name}': source names can only contain alphanumeric characters, and .-_"
             elsif name == "local"
@@ -797,32 +798,20 @@ module Autoproj
         end
 
         # List the autobuild files that are part of this package set
-        def each_autobuild_file
-            return enum_for(__method__) if !block_given?
-
-            Dir.glob(File.join(local_dir, "*.autobuild")).sort.each do |file|
-                yield(file)
-            end
+        def each_autobuild_file(&block)
+            Dir.glob(File.join(local_dir, "*.autobuild")).sort.each(&block)
         end
 
         # Yields each osdeps definition files that are present in this package
         # set
-        def each_osdeps_file
-            return enum_for(__method__) if !block_given?
-
-            Dir.glob(File.join(local_dir, "*.osdeps")).each do |file|
-                yield(file)
-            end
+        def each_osdeps_file(&block)
+            Dir.glob(File.join(local_dir, "*.osdeps")).each(&block)
         end
 
         # Yields each osdeps definition files that are present in this package
         # set
-        def each_osrepos_file
-            return enum_for(__method__) if !block_given?
-
-            Dir.glob(File.join(local_dir, "*.osrepos")).each do |file|
-                yield(file)
-            end
+        def each_osrepos_file(&block)
+            Dir.glob(File.join(local_dir, "*.osrepos")).each(&block)
         end
     end
 end

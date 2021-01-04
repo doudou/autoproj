@@ -49,6 +49,7 @@ module Autoproj
     class ExcludedPackage < ConfigError
         attr_reader :name
         def initialize(name)
+            super()
             @name = name
         end
     end
@@ -66,6 +67,7 @@ module Autoproj
     class ExcludedSelection < ConfigError
         attr_reader :selection
         def initialize(selection)
+            super()
             @selection = selection
         end
     end

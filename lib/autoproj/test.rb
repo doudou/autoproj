@@ -251,12 +251,10 @@ gem 'autobuild', path: '#{autobuild_dir}'
             @gem_server_pid = nil
         end
 
-        def capture_deprecation_message
+        def capture_deprecation_message(&block)
             level = Autoproj.warn_deprecated_level
             Autoproj.warn_deprecated_level = -1
-            capture_subprocess_io do
-                yield
-            end
+            capture_subprocess_io(&block)
         ensure
             Autoproj.warn_deprecated_level = level
         end
@@ -278,10 +276,8 @@ gem 'autobuild', path: '#{autobuild_dir}'
             stdout.chomp
         end
 
-        def in_ws
-            Dir.chdir(@ws.root_dir) do
-                yield
-            end
+        def in_ws(&block)
+            Dir.chdir(@ws.root_dir, &block)
         end
 
         attr_reader :ws_os_package_resolver

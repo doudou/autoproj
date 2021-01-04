@@ -113,7 +113,7 @@ module Autoproj
             array.each do |releases|
                 verify_type(releases, Hash, path)
 
-                releases.values.each do |entries|
+                releases.each_value do |entries|
                     verify_type(entries, Array, path)
                     verify_entries(entries, path + entries)
                 end

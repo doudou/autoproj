@@ -295,7 +295,7 @@ module Autoproj
                 fields = []
                 fields << ['type', type] if type
                 fields << ['url', url] if url
-                fields = fields.concat(options.to_a.sort_by { |k, _| k.to_s })
+                fields.concat(options.to_a.sort_by { |k, _| k.to_s })
                 fields.map do |key, value|
                     if value.respond_to?(:to_str) && File.file?(value) && value =~ /^\//
                         value = Pathname.new(value).relative_path_from(Pathname.new(Autoproj.root_dir))

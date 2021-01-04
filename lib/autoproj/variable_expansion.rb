@@ -36,7 +36,7 @@ module Autoproj
             return data
         end
 
-        data = data.gsub(/(.|^)\$(\w+)/) do |constant_name|
+        data.gsub(/(.|^)\$(\w+)/) do |constant_name|
             prefix = constant_name[0, 1]
             if prefix == "\\"
                 next(constant_name[1..-1])
@@ -56,7 +56,6 @@ module Autoproj
             end
             "#{prefix}#{value}"
         end
-        data
     end
 
     # Expand constants within +value+

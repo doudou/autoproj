@@ -1025,3 +1025,26 @@ Style/WordArray:
     - 'test/test_package_selection.rb'
     - 'test/test_query_base.rb'
     - 'test/test_source_package_query.rb'
+
+Layout/EmptyLinesAroundAttributeAccessor: # (new in 0.83)
+  Enabled: false
+Style/GlobalStdStream: # (new in 0.89)
+  Enabled: false
+Lint/ConstantDefinitionInBlock: # (new in 0.91)
+  Enabled: false
+Style/HashAsLastArrayItem: # (new in 0.88)
+  Enabled: false
+Style/AccessorGrouping: # (new in 0.87)
+  Enabled: false
+Style/OptionalBooleanParameter: # (new in 0.89)
+  Enabled: false
+Style/SoleNestedConditional: # (new in 0.89)
+  Enabled: false
+Style/CaseLikeIf: # (new in 0.88)
+  Enabled: false
+Style/StringConcatenation: # (new in 0.89)
+  Enabled: false
+Style/RedundantSelfAssignment: # (new in 0.90)
+  Enabled: false
+Lint/OutOfRangeRegexpRef: # (new in 0.89)
+  Enabled: false

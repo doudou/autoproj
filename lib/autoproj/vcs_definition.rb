@@ -247,7 +247,7 @@ module Autoproj
             to_hash == other.to_hash
         end
 
-        ABSOLUTE_PATH_OR_URI = /^([\w+]+:\/)?\/|^[:\w]+\@|^(\w+\@)?[\w\.-]+:/
+        ABSOLUTE_PATH_OR_URI = /^([\w+]+:\/)?\/|^[:\w]+@|^(\w+@)?[\w.-]+:/
 
         def self.to_absolute_url(url, root_dir)
             if url && url !~ ABSOLUTE_PATH_OR_URI
