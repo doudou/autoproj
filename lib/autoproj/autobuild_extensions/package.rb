@@ -120,6 +120,7 @@ module Autoproj
                 all_dependencies(set)
                 set.dup.each do |dep_pkg_name|
                     next if original_set.include?(dep_pkg_name)
+
                     if dep_pkg = ws.manifest.find_autobuild_package(dep_pkg_name)
                         set.merge(dep_pkg.os_packages)
                     else

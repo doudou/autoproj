@@ -40,9 +40,8 @@ module Autoproj
         # internal name used to represent the package and +into+ the directory
         # in which the package should be checked out.
         def create_autobuild_package(vcs, text_name, into)
-            importer     = vcs.create_autobuild_importer
+            importer = vcs.create_autobuild_importer
             FakePackage.new(text_name, into, importer)
-
         rescue Autobuild::ConfigException => e
             raise ConfigError.new, "cannot import #{text_name}: #{e.message}", e.backtrace
         end
@@ -90,4 +89,3 @@ module Autoproj
     end
     end
 end
-

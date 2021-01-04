@@ -208,7 +208,7 @@ module Autoproj
                       'which does not have a VCS type'
             end
 
-            if !(url  = normalized_spec.delete(:url)) && type != 'none'
+            if !(url = normalized_spec.delete(:url)) && type != 'none'
                 raise ArgumentError,
                       "the source specification #{raw_spec_to_s(spec)} normalizes "\
                       "into #{raw_spec_to_s(normalized_spec)}, "\
@@ -221,19 +221,20 @@ module Autoproj
             )
         end
 
-        def ==(other_vcs)
-            return false if !other_vcs.kind_of?(VCSDefinition)
+        def ==(other)
+            return false if !other.kind_of?(VCSDefinition)
+
             if local?
-                other_vcs.local? && url == other_vcs.url
-            elsif other_vcs.local?
+                other.local? && url == other.url
+            elsif other.local?
                 false
             elsif none?
-                other_vcs.none?
-            elsif other_vcs.none?
+                other.none?
+            elsif other.none?
                 false
             else
                 this_importer = create_autobuild_importer
-                other_importer = other_vcs.create_autobuild_importer
+                other_importer = other.create_autobuild_importer
                 this_importer.source_id == other_importer.source_id
             end
         end
@@ -242,8 +243,8 @@ module Autoproj
             to_hash.hash
         end
 
-        def eql?(other_vcs)
-            to_hash == other_vcs.to_hash
+        def eql?(other)
+            to_hash == other.to_hash
         end
 
         ABSOLUTE_PATH_OR_URI = /^([\w+]+:\/)?\/|^[:\w]+\@|^(\w+\@)?[\w\.-]+:/
@@ -262,6 +263,7 @@ module Autoproj
 
         def overrides_key
             return if none?
+
             if local?
                 "local:#{url}"
             else
@@ -282,6 +284,7 @@ module Autoproj
                     package_set = entry.package_set
                     vcs         = entry.vcs
                     next if !package_set || package_set.main?
+
                     importer.declare_alternate_repository(package_set.name, vcs.url, vcs.options)
                 end
             end

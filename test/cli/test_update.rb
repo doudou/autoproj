@@ -261,6 +261,7 @@ module Autoproj
                         flexmock(ws).should_receive(:load_package_sets).
                             once.and_raise(pkg_set_failure.new(errors))
                     end
+
                     def mock_package_failure(*errors, **options)
                         flexmock(Ops::Import).new_instances.should_receive(:import_packages).
                             once.and_raise(pkg_failure.new(errors, **options))
@@ -305,7 +306,7 @@ module Autoproj
                             cli.run([], keep_going: true, packages: true)
                         end
                         assert_equal [original_pkg_set_failure, original_pkg_failure],
-                            failure.original_errors
+                                     failure.original_errors
                     end
 
                     it "performs osdep import based on the return value of #import_packages if the package set import failed but not the package update" do
@@ -332,5 +333,3 @@ module Autoproj
         end
     end
 end
-
-

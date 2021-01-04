@@ -30,7 +30,7 @@ module Autoproj
                 q = SourcePackageQuery.new(['autobuild', 'name'], 'package', false)
                 assert_nil q.match(@pkg)
             end
-        
+
             it "returns DIR_PREFIX_STRONG if the value is slash-separated and the last value is exact" do
                 q = SourcePackageQuery.new(['autobuild', 'name'], 'te/package', true)
                 assert_equal SourcePackageQuery::DIR_PREFIX_STRONG, q.match(@pkg)
@@ -42,7 +42,6 @@ module Autoproj
             it "returns DIR_PREFIX_WEAK if the value is slash-separated and the last value is not exact" do
                 q = SourcePackageQuery.new(['autobuild', 'name'], 'te/p', true)
                 assert_equal SourcePackageQuery::DIR_PREFIX_WEAK, q.match(@pkg)
-
             end
             it "disables DIR_PREFIX_WEAK matching if partial match is disabled" do
                 q = SourcePackageQuery.new(['autobuild', 'name'], 'te/p', false)
@@ -69,4 +68,3 @@ module Autoproj
         end
     end
 end
-

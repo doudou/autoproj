@@ -200,7 +200,7 @@ gem 'autobuild', path: '#{autobuild_dir}'
         def prepare_fixture_gem_home
             FileUtils.rm_rf fixture_gem_home
             bundled_gems_path = File.expand_path(File.join("..", ".."),
-                find_gem_dir('utilrb').full_gem_path)
+                                                 find_gem_dir('utilrb').full_gem_path)
             FileUtils.cp_r bundled_gems_path, fixture_gem_home
 
             vendor = File.join(__dir__, '..', '..', 'vendor')
@@ -240,7 +240,7 @@ gem 'autobuild', path: '#{autobuild_dir}'
                 begin
                     TCPSocket.new('127.0.0.1', 8808)
                     break
-                rescue Errno::ECONNREFUSED # rubocop:disable Lint/HandleExceptions
+                rescue Errno::ECONNREFUSED
                 end
             end
         end
@@ -306,7 +306,7 @@ gem 'autobuild', path: '#{autobuild_dir}'
         def ws_create(dir = make_tmpdir, partial_config: false)
             require 'autoproj/ops/main_config_switcher'
             FileUtils.cp_r Ops::MainConfigSwitcher::MAIN_CONFIGURATION_TEMPLATE,
-                File.join(dir, 'autoproj')
+                           File.join(dir, 'autoproj')
             FileUtils.mkdir_p File.join(dir, '.autoproj')
 
             ws_create_os_package_resolver
@@ -406,7 +406,7 @@ gem 'autobuild', path: '#{autobuild_dir}'
         def ws_add_package_to_layout(package_type, package_name,
                                      package_set: ws.manifest.main_package_set, &block)
             pkg = ws_define_package(package_type, package_name,
-                package_set: package_set, &block)
+                                    package_set: package_set, &block)
             ws.manifest.add_package_to_layout(pkg)
             pkg
         end

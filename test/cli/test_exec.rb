@@ -24,9 +24,9 @@ module Autoproj
             describe "without using the cache" do
                 before do
                     append_to_file 'autoproj/init.rb',
-                        "Autoproj.env.set 'TEST_ENV_VAR', 'SOME_VALUE'\n"
+                                   "Autoproj.env.set 'TEST_ENV_VAR', 'SOME_VALUE'\n"
                     append_to_file 'autoproj/init.rb',
-                        "Autoproj.env.add_path 'PATH', '#{expand_path('subdir')}'\n"
+                                   "Autoproj.env.add_path 'PATH', '#{expand_path('subdir')}'\n"
                 end
 
                 it "resolves the command and execs the process with the internal environment" do
@@ -39,10 +39,10 @@ ENV SOME_VALUE
 
                 it "displays an error if the command does not exist" do
                     cmd = run_command_and_stop "#{@autoproj_bin} exec does_not_exist --some --arg",
-                        fail_on_error: false
+                                               fail_on_error: false
                     assert_equal 1, cmd.exit_status
                     assert_equal "#{@cursor.clear_screen_down}  ERROR: cannot resolve `does_not_exist` to an executable in the workspace\n",
-                        cmd.stderr
+                                 cmd.stderr
                 end
             end
 
@@ -67,17 +67,17 @@ ENV SOME_VALUE
 
                 it "displays an error if the command does not exist" do
                     cmd = run_command_and_stop "#{@autoproj_bin} exec --use-cache does_not_exist --some --arg",
-                        fail_on_error: false
+                                               fail_on_error: false
                     assert_equal 1, cmd.exit_status
                     assert_equal "#{@cursor.clear_screen_down}  ERROR: cannot resolve `does_not_exist` to an executable in the workspace\n",
-                        cmd.stderr
+                                 cmd.stderr
                 end
             end
         end
     end
 end
 
-#module Autoproj
+# module Autoproj
 #    module CLI
 #        describe Exec do
 #            before do
@@ -116,7 +116,7 @@ end
 #            end
 #        end
 #    end
-#end
+# end
 #
 #
 #

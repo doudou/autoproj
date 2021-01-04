@@ -19,9 +19,7 @@ module Autoproj
                     return
                 end
 
-                _, osdep_packages, resolved_selection, _ =
-                    finalize_setup(user_selection)
-
+                _, osdep_packages, = finalize_setup(user_selection)
                 shell_helpers = options.fetch(:shell_helpers, ws.config.shell_helpers?)
 
                 ws.install_os_repositories
@@ -31,7 +29,7 @@ module Autoproj
                     install_only: !update)
                 export_env_sh(shell_helpers: shell_helpers)
                 Main.run_post_command_hook(:update, ws, source_packages: [],
-                    osdep_packages: osdep_packages)
+                                                        osdep_packages: osdep_packages)
             end
         end
     end

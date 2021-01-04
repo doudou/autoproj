@@ -141,12 +141,12 @@ module Autoproj
                 if run_hook
                     if options[:osdeps]
                         CLI::Main.run_post_command_hook(:update, ws,
-                            source_packages: source_packages,
-                            osdep_packages: osdep_packages)
+                                                        source_packages: source_packages,
+                                                        osdep_packages: osdep_packages)
                     else
                         CLI::Main.run_post_command_hook(:update, ws,
-                            source_packages: source_packages,
-                            osdep_packages: [])
+                                                        source_packages: source_packages,
+                                                        osdep_packages: [])
                     end
                 end
 
@@ -187,7 +187,8 @@ module Autoproj
 
             def normalize_osdeps_options(
                 checkout_only: false, osdeps: true, osdeps_mode: nil,
-                osdeps_filter_uptodate: true)
+                osdeps_filter_uptodate: true
+            )
 
                 osdeps_options = Hash[install_only: checkout_only]
                 if osdeps_mode
@@ -249,7 +250,7 @@ module Autoproj
                 filter =
                     if ask
                         prompt = TTY::Prompt.new
-                        filter = AskUpdateFilter.new(
+                        AskUpdateFilter.new(
                             prompt, parallel: parallel, only_local: only_local
                         )
                     else
@@ -260,16 +261,16 @@ module Autoproj
                     ws, report_path: (ws.import_report_path if report))
                 source_packages, osdep_packages =
                         ops.import_packages(selected_packages,
-                                        checkout_only: checkout_only,
-                                        only_local: only_local,
-                                        reset: reset,
-                                        recursive: deps,
-                                        keep_going: keep_going,
-                                        parallel: parallel,
-                                        retry_count: retry_count,
-                                        install_vcs_packages: (osdeps_options if osdeps),
-                                        auto_exclude: auto_exclude,
-                                        filter: filter)
+                                            checkout_only: checkout_only,
+                                            only_local: only_local,
+                                            reset: reset,
+                                            recursive: deps,
+                                            keep_going: keep_going,
+                                            parallel: parallel,
+                                            retry_count: retry_count,
+                                            install_vcs_packages: (osdeps_options if osdeps),
+                                            auto_exclude: auto_exclude,
+                                            filter: filter)
                 [source_packages, osdep_packages, nil]
             rescue ExcludedSelection => e
                 raise CLIInvalidSelection, e.message, e.backtrace
@@ -295,4 +296,3 @@ module Autoproj
         end
     end
 end
-

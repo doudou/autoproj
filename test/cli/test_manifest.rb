@@ -68,7 +68,7 @@ module Autoproj
                     cli.run(['test'])
                 end
                 assert_equal "neither #{full_path} nor #{alternative_full_path} exist",
-                    e.message
+                             e.message
             end
 
             it "validates that the resulting file can be loaded as a manifest" do
@@ -91,10 +91,9 @@ module Autoproj
                     cli.run([full_path])
                 end
                 assert_equal "#{full_path} is not part of #{ws.config_dir}",
-                    e.message
+                             e.message
                 assert_configured_manifest 'manifest', File.join(ws.config_dir, 'manifest')
             end
         end
     end
 end
-

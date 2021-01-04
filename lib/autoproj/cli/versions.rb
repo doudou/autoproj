@@ -9,7 +9,7 @@ module Autoproj
             DEFAULT_VERSIONS_FILE_BASENAME = Ops::Snapshot::DEFAULT_VERSIONS_FILE_BASENAME
 
             def default_versions_file
-                File.join( ws.overrides_dir, DEFAULT_VERSIONS_FILE_BASENAME )
+                File.join(ws.overrides_dir, DEFAULT_VERSIONS_FILE_BASENAME)
             end
 
             def validate_options(packages, options = Hash.new)
@@ -51,10 +51,10 @@ module Autoproj
                     versions += ops.snapshot_package_sets(nil, only_local: options[:only_local])
                 end
                 if snapshot_packages
-                    versions += ops.snapshot_packages(packages, 
-                        nil, 
-                        only_local: options[:only_local],
-                        fingerprint: options[:fingerprint])
+                    versions += ops.snapshot_packages(packages,
+                                                      nil,
+                                                      only_local: options[:only_local],
+                                                      fingerprint: options[:fingerprint])
                 end
 
                 if output_file = options[:save]
@@ -67,4 +67,3 @@ module Autoproj
         end
     end
 end
-

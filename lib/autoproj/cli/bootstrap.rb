@@ -14,6 +14,7 @@ module Autoproj
                 if File.exist?(File.join(root_dir, 'autoproj', "manifest"))
                     raise CLIException, "this installation is already bootstrapped. Remove the autoproj directory if it is not the case"
                 end
+
                 @root_dir = root_dir
             end
 
@@ -28,6 +29,7 @@ module Autoproj
                     if !File.directory?(path) || !File.directory?(File.join(path, 'autoproj'))
                         raise CLIInvalidArguments, "#{path} does not look like an autoproj installation"
                     end
+
                     options[:reuse] = [path]
                 end
                 return args, options
@@ -46,8 +48,8 @@ module Autoproj
 
                 begin
                     switcher.bootstrap(buildconf_info,
-                        check_root_dir_empty: check_root_dir_empty,
-                        **options)
+                                       check_root_dir_empty: check_root_dir_empty,
+                                       **options)
                     if seed_config
                         FileUtils.cp seed_config, File.join(ws.config_dir, 'config.yml')
                     end
@@ -73,7 +75,6 @@ The resulting software is installed in
 #{ws.prefix_dir}
 
                     EOTEXT
-
                 rescue RuntimeError
                     STDERR.puts <<-EOTEXT
 #{Autoproj.color('autoproj bootstrap failed', :red, :bold)}
@@ -92,4 +93,3 @@ autoproj bootstrap '#{ARGV.join("'")}'
         end
     end
 end
-

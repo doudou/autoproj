@@ -76,13 +76,13 @@ module Autoproj
                     ops.import_packages(@selection)
                     json = JSON.load(File.read(report_path))
                     assert_equal({
-                        'import_report' => {
-                            'timestamp' => Time.now.to_s,
-                            'packages' => {
-                                '1' => { 'invoked' => false, 'success' => false }
-                            }
-                        }
-                    }, json)
+                                     'import_report' => {
+                                         'timestamp' => Time.now.to_s,
+                                         'packages' => {
+                                             '1' => { 'invoked' => false, 'success' => false }
+                                         }
+                                     }
+                                 }, json)
                 end
 
                 it "exports a report on failure" do
@@ -99,13 +99,13 @@ module Autoproj
                     end
                     json = JSON.load(File.read(report_path))
                     assert_equal({
-                        'import_report' => {
-                            'timestamp' => Time.now.to_s,
-                            'packages' => {
-                                '1' => { 'invoked' => false, 'success' => false }
-                            }
-                        }
-                    }, json)
+                                     'import_report' => {
+                                         'timestamp' => Time.now.to_s,
+                                         'packages' => {
+                                             '1' => { 'invoked' => false, 'success' => false }
+                                         }
+                                     }
+                                 }, json)
                 end
 
                 it "does not export a report if @report_path is unset" do
@@ -178,53 +178,52 @@ module Autoproj
                     @ops.create_report([])
                     json = read_report
                     assert_equal({
-                        'import_report' => {
-                            'timestamp' => Time.now.to_s,
-                            'packages' => {}
-                        }
-                    }, json)
+                                     'import_report' => {
+                                         'timestamp' => Time.now.to_s,
+                                         'packages' => {}
+                                     }
+                                 }, json)
                 end
 
                 it "works with just one successful package" do
                     @ops.create_report(['pkg1'])
                     json = read_report
                     assert_equal({
-                        'import_report' => {
-                            'timestamp' => Time.now.to_s,
-                            'packages' => {
-                                'pkg1' => { 'invoked' => true, 'success' => true },
-                            }
-                        }
-                    }, json)
+                                     'import_report' => {
+                                         'timestamp' => Time.now.to_s,
+                                         'packages' => {
+                                             'pkg1' => { 'invoked' => true, 'success' => true },
+                                         }
+                                     }
+                                 }, json)
                 end
 
                 it "works with just one failed package" do
                     @ops.create_report(['pkg2'])
                     json = read_report
                     assert_equal({
-                        'import_report' => {
-                            'timestamp' => Time.now.to_s,
-                            'packages' => {
-                                'pkg2' => { 'invoked' => true, 'success' => false },
-                            }
-                        }
-                    }, json)
+                                     'import_report' => {
+                                         'timestamp' => Time.now.to_s,
+                                         'packages' => {
+                                             'pkg2' => { 'invoked' => true, 'success' => false },
+                                         }
+                                     }
+                                 }, json)
                 end
 
-
                 it "exports the status of several given packages" do
-                    @ops.create_report(['pkg1','pkg2', 'pkg3'])
+                    @ops.create_report(['pkg1', 'pkg2', 'pkg3'])
                     json = read_report
                     assert_equal({
-                        'import_report' => {
-                            'timestamp' => Time.now.to_s,
-                            'packages' => {
-                                'pkg1' => { 'invoked' => true, 'success' => true },
-                                'pkg2' => { 'invoked' => true, 'success' => false },
-                                'pkg3' => { 'invoked' => false, 'success' => false }
-                            }
-                        }
-                    }, json)
+                                     'import_report' => {
+                                         'timestamp' => Time.now.to_s,
+                                         'packages' => {
+                                             'pkg1' => { 'invoked' => true, 'success' => true },
+                                             'pkg2' => { 'invoked' => true, 'success' => false },
+                                             'pkg3' => { 'invoked' => false, 'success' => false }
+                                         }
+                                     }
+                                 }, json)
                 end
 
                 def read_report
@@ -260,8 +259,8 @@ module Autoproj
                     it "skips the import of non-imported packages and does not return them" do
                         ws_setup_package_dirs(base_cmake, create_srcdir: false)
                         assert_equal [Set[], []],
-                            ops.import_selected_packages(
-                                mock_selection(base_cmake), non_imported_packages: :ignore)
+                                     ops.import_selected_packages(
+                                         mock_selection(base_cmake), non_imported_packages: :ignore)
                     end
                     it "does not load information nor calls post-import blocks for non-imported packages" do
                         ws_setup_package_dirs(base_cmake, create_srcdir: false)
@@ -276,7 +275,7 @@ module Autoproj
                     it "skips the import of non-imported packages and returns them" do
                         ws_setup_package_dirs(base_cmake, create_srcdir: false)
                         assert_equal [Set[base_cmake], []],
-                            ops.import_selected_packages(mock_selection(base_cmake), non_imported_packages: :return)
+                                     ops.import_selected_packages(mock_selection(base_cmake), non_imported_packages: :return)
                     end
                     it "does not load information nor calls post-import blocks for non-imported packages" do
                         ws_setup_package_dirs(base_cmake, create_srcdir: false)
@@ -345,7 +344,6 @@ module Autoproj
                     flexmock(base_cmake.autobuild.importer).should_receive(:import).
                         once.globally.ordered
                     ops.import_selected_packages(mock_selection(base_cmake), retry_count: retry_count)
-
                 end
                 it "sets the retry_count on the interactive packages before it calls #import on them" do
                     mock_vcs(base_cmake, interactive: true)
@@ -367,7 +365,7 @@ module Autoproj
                         ops.import_selected_packages(mock_selection(base_cmake))
                     end
                     assert_equal "base/cmake has no VCS, but is not checked out in #{srcdir}",
-                        failure.message
+                                 failure.message
                 end
                 it "checks out packages that are not present on disk" do
                     mock_vcs(base_cmake, type: 'git', url: 'https://github.com')
@@ -482,7 +480,6 @@ module Autoproj
                     flexmock(ops).should_receive(:post_package_import).never
                     ops.import_selected_packages(mock_selection(base_cmake))
                 end
-
 
                 it "does not wait on a package for which it failed to queue the work" do
                     mock_vcs(base_cmake)
@@ -662,4 +659,3 @@ module Autoproj
         end
     end
 end
-

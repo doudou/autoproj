@@ -46,11 +46,10 @@ module Autoproj
         describe "#resolve_package" do
             it "handles bad formatting produced by parsing invalid YAML with old YAML Ruby versions" do
                 data = { 'test' => {
-                            'v1.0' => 'pkg1.0 blabla',
-                            'v1.1' => 'pkg1.1 bloblo',
-                            'default' => 'pkgdef'
-                         }
-                }
+                    'v1.0' => 'pkg1.0 blabla',
+                    'v1.1' => 'pkg1.1 bloblo',
+                    'default' => 'pkgdef'
+                } }
                 osdeps = create_osdep(data)
                 expected = [[osdeps.os_package_manager, FOUND_PACKAGES, ['pkg1.0 blabla']]]
                 assert_equal expected, osdeps.resolve_package('pkg')
@@ -58,11 +57,10 @@ module Autoproj
 
             it "applies aliases" do
                 data = { 'test' => {
-                            'v1.0' => 'pkg1.0',
-                            'v1.1' => 'pkg1.1',
-                            'default' => 'pkgdef'
-                         }
-                }
+                    'v1.0' => 'pkg1.0',
+                    'v1.1' => 'pkg1.1',
+                    'default' => 'pkgdef'
+                } }
                 osdeps = create_osdep(data)
                 osdeps.add_aliases 'bla' => 'pkg'
                 expected = [[osdeps.os_package_manager, FOUND_PACKAGES, ['pkg1.0']]]
@@ -82,7 +80,7 @@ module Autoproj
                     flexmock(osdeps).should_receive(:resolve_package).
                         with('pkg1.0').and_return([[osdeps.os_package_manager, FOUND_PACKAGES, ['pkg1.1']]])
                     assert_equal [[osdeps.os_package_manager, FOUND_PACKAGES, ['pkg1.1']]],
-                        osdeps.resolve_package('pkg')
+                                 osdeps.resolve_package('pkg')
                 end
 
                 it "raises if a recursive resolution does not match an existing package" do
@@ -90,7 +88,7 @@ module Autoproj
                         osdeps.resolve_package('pkg')
                     end
                     assert_equal "the 'pkg' osdep refers to another osdep, 'pkg1.0', which does not seem to exist: Autoproj::OSPackageResolver::InvalidRecursiveStatement",
-                        exception.message
+                                 exception.message
                 end
 
                 it "replaces recursive resolution by a fake package manager if resolve_recursive: is false" do
@@ -104,11 +102,10 @@ module Autoproj
 
                 before do
                     @data = { 'test' => {
-                                'v1.0' => nil,
-                                'v1.1' => 'pkg1.1',
-                                'default' => 'pkgdef'
-                             }
-                    }
+                        'v1.0' => nil,
+                        'v1.1' => 'pkg1.1',
+                        'default' => 'pkgdef'
+                    } }
                 end
 
                 it "resolves a single package name" do
@@ -221,8 +218,7 @@ module Autoproj
                     'global_pkg1', 'global_pkg2',
                     { 'test' => 'pkg1.1',
                       'other_test' => 'pkg1.1',
-                      'default' => 'nonexistent'
-                }
+                      'default' => 'nonexistent' }
                 ]
                 osdeps = create_osdep(data)
 
@@ -234,7 +230,7 @@ module Autoproj
                 data = [
                     'global_pkg1', 'global_pkg2',
                     {
-                      'other_test' => 'pkg1.1',
+                        'other_test' => 'pkg1.1',
                     }
                 ]
                 osdeps = create_osdep(data)
@@ -247,8 +243,7 @@ module Autoproj
                 data = [
                     'global_pkg1', 'global_pkg2',
                     { 'test' => 'nonexistent',
-                      'other_test' => 'pkg1.1'
-                    }
+                      'other_test' => 'pkg1.1' }
                 ]
                 osdeps = create_osdep(data)
 
@@ -260,8 +255,7 @@ module Autoproj
                 data = [
                     'global_pkg1', 'global_pkg2',
                     { 'test' => 'ignore',
-                      'other_test' => 'pkg1.1'
-                }
+                      'other_test' => 'pkg1.1' }
                 ]
                 osdeps = create_osdep(data)
 
@@ -275,8 +269,7 @@ module Autoproj
                 'global_pkg1', 'global_pkg2',
                 { 'test' => ['pkg0', 'pkg1', { 'v1.0' => 'pkg1.0' }],
                   'other_test' => 'pkg1.1',
-                  'default' => 'nonexistent'
-                }
+                  'default' => 'nonexistent' }
             ]
             osdeps = create_osdep(data)
 
@@ -289,8 +282,7 @@ module Autoproj
                 'global_pkg1', 'global_pkg2',
                 { 'test' => ['pkg0', 'pkg1', { 'v1.0' => 'nonexistent' }],
                   'other_test' => 'pkg1.1',
-                  'default' => 'nonexistent'
-                }
+                  'default' => 'nonexistent' }
             ]
             osdeps = create_osdep(data)
 
@@ -303,8 +295,7 @@ module Autoproj
                 'global_pkg1', 'global_pkg2',
                 { 'test' => ['pkg0', 'pkg1', { 'v1.0' => 'ignore' }],
                   'other_test' => 'pkg1.1',
-                  'default' => 'nonexistent'
-                }
+                  'default' => 'nonexistent' }
             ]
             osdeps = create_osdep(data)
 
@@ -317,8 +308,7 @@ module Autoproj
                 'global_pkg1', 'global_pkg2',
                 { 'test' => ['pkg0', 'pkg1', { 'v1.1' => 'pkg1.1' }],
                   'other_test' => 'pkg1.1',
-                  'default' => 'nonexistent'
-                }
+                  'default' => 'nonexistent' }
             ]
             osdeps = create_osdep(data)
 
@@ -349,7 +339,7 @@ module Autoproj
         end
 
         def test_resolve_osindep_packages_specific
-            data = ['gem', { 'test' => { 'gem' => 'gempkg' } } ]
+            data = ['gem', { 'test' => { 'gem' => 'gempkg' } }]
             osdeps = create_osdep(data)
             expected = [['gem', FOUND_PACKAGES, ['pkg', 'gempkg']]]
             assert_equal expected, osdeps.resolve_package('pkg')
@@ -470,9 +460,6 @@ module Autoproj
                 [[osdeps.os_package_manager, FOUND_PACKAGES, ['pkg1']],
                  ['gem', FOUND_PACKAGES, ['gempkg1']]])
             osdeps.should_receive(:resolve_package).with('pkg2').once.and_return(nil)
-            expected =
-                [[osdeps.os_package_manager, ['pkg0']],
-                 ['gem', ['gempkg1', 'gempkg2']]]
             assert_raises(MissingOSDep) { osdeps.resolve_os_packages(['pkg0', 'pkg1', 'pkg2']) }
 
             osdeps.should_receive(:resolve_package).with('pkg0').once.and_return(
@@ -512,29 +499,34 @@ module Autoproj
         def test_os_from_os_release_returns_nil_if_the_os_release_file_is_not_found
             assert !OSPackageResolver.os_from_os_release('does_not_exist')
         end
+
         def test_os_from_os_release_handles_quoted_and_unquoted_fields
             names, versions = OSPackageResolver.os_from_os_release(
                 File.join(DATA_DIR, 'os_release.with_missing_optional_fields'))
             assert_equal ['name'], names
             assert_equal ['version_id'], versions
         end
+
         def test_os_from_os_release_handles_optional_fields
             names, versions = OSPackageResolver.os_from_os_release(
                 File.join(DATA_DIR, 'os_release.with_missing_optional_fields'))
             assert_equal ['name'], names
             assert_equal ['version_id'], versions
         end
+
         def test_os_from_os_release_parses_the_version_field
             _, versions = OSPackageResolver.os_from_os_release(
                 File.join(DATA_DIR, 'os_release.with_complex_version_field'))
             assert_equal ['version_id', 'version', 'codename', 'codename_bis'], versions
         end
+
         def test_os_from_os_release_removes_duplicate_values
             names, versions = OSPackageResolver.os_from_os_release(
                 File.join(DATA_DIR, 'os_release.with_duplicate_values'))
             assert_equal ['id'], names
             assert_equal ['version_id', 'codename'], versions
         end
+
         def test_os_from_lsb_returns_nil_if_lsb_release_is_not_found_in_path
             flexmock(Autobuild).should_receive(:find_in_path).with('lsb_release').and_return(nil)
             assert !OSPackageResolver.os_from_lsb
@@ -557,7 +549,7 @@ module Autoproj
                 osdeps1 = create_osdep(Hash['test' => ['osdep1'], 'gem' => ['gem1']], 'bla/blo')
                 capture_warn { osdeps0.merge(osdeps1) }
                 assert_equal [["apt-dpkg", 0, ["osdep1"]], ["gem", 0, ["gem1"]]],
-                    osdeps0.resolve_package('pkg')
+                             osdeps0.resolve_package('pkg')
             end
 
             it "issues a warning if two definitions differ only by the operating system packages" do
@@ -690,4 +682,3 @@ osdeps definition for pkg, previously defined in bla/bla overridden by bla/blo:
         end
     end
 end
-

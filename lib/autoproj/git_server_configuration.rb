@@ -6,11 +6,10 @@ module Autoproj
         'ssh' => 'ssh,ssh',
         'http' => 'http,http']
 
-
     # @api private
     #
     # Helper for {.git_server_configuration}
-    def self.git_server_validate_config_value(base_url, value, disabled_methods: )
+    def self.git_server_validate_config_value(base_url, value, disabled_methods:)
         values = (GIT_SERVER_ACCESS_METHODS[value] || value).split(",")
         values.each do |access_method|
             if !GIT_SERVER_ACCESS_METHODS.has_key?(access_method)
@@ -25,7 +24,7 @@ module Autoproj
     # @api private
     #
     # Helper for {.git_server_configuration}
-    def self.git_server_resolve_master_config(name, config, base_url: , git_url: , http_url: , ssh_url: , disabled_methods: )
+    def self.git_server_resolve_master_config(name, config, base_url:, git_url:, http_url:, ssh_url:, disabled_methods:)
         access_mode = config.get(name)
         begin
             git_server_validate_config_value(base_url, access_mode, disabled_methods: disabled_methods)
@@ -84,7 +83,8 @@ module Autoproj
             "If you give multiple values, comma-separated, the first one will be",
             "used for pulling and the second one for pushing. An optional third value",
             "will be used to pull from private repositories (the same than pushing is",
-            "used by default)"]
+            "used by default)"
+        ]
 
         config.declare name, 'string', default: default, doc: long_doc do |value|
             git_server_validate_config_value(base_url, value, disabled_methods: disabled_methods)
@@ -92,11 +92,11 @@ module Autoproj
 
         if !lazy
             pull, push, private_pull = git_server_resolve_master_config(name, config,
-                base_url: base_url,
-                git_url: git_url,
-                http_url: http_url,
-                ssh_url: ssh_url,
-                disabled_methods: disabled_methods)
+                                                                        base_url: base_url,
+                                                                        git_url: git_url,
+                                                                        http_url: http_url,
+                                                                        ssh_url: ssh_url,
+                                                                        disabled_methods: disabled_methods)
         end
 
         Autoproj.add_source_handler name.downcase do |url, private: false, **vcs_options|
@@ -109,11 +109,11 @@ module Autoproj
 
             if !GIT_SERVER_CONFIG_VARS.all? { |v| config.has_value_for?("#{name}#{v}") }
                 pull, push, private_pull = git_server_resolve_master_config(name, config,
-                    base_url: base_url,
-                    git_url: git_url,
-                    http_url: http_url,
-                    ssh_url: ssh_url,
-                    disabled_methods: disabled_methods)
+                                                                            base_url: base_url,
+                                                                            git_url: git_url,
+                                                                            http_url: http_url,
+                                                                            ssh_url: ssh_url,
+                                                                            disabled_methods: disabled_methods)
             end
             pull_base_url =
                 if private
@@ -133,7 +133,7 @@ module Autoproj
 
     def self.gitorious_server_configuration(name, base_url, **options)
         Autoproj.warn_deprecated "gitorious_server_configuration",
-            "use require 'git_server_configuration' and
+                                 "use require 'git_server_configuration' and
             Autoproj.git_server_configuration instead. note that the method call
             interface has not changed, you just have to change the name(s)"
         git_server_configuration(name, base_url, **options)

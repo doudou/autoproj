@@ -100,9 +100,9 @@ module Autoproj
             if !manifest.exist?
                 raise ConfigError.new, "no #{path} file found. You should probably rerun autoproj envsh in that folder first"
             end
+
             manifest.load
             manifest
         end
     end
 end
-

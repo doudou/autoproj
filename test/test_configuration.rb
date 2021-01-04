@@ -105,6 +105,9 @@ module Autoproj
                 before do
                     @config.override 'test', 'something'
                 end
+                it "reports that the value is set" do
+                    assert @config.has_value_for?("test")
+                end
                 it "changes the value returned by #get" do
                     assert_equal 'something', @config.get('test')
                 end
@@ -127,12 +130,29 @@ module Autoproj
                     assert_nil @config.get('test')
                     assert_equal Hash['test' => nil], @config.to_hash
                 end
+                it "gets removed with a call to #reset_overrides without arguments" do
+                    @config.reset_overrides
+                    refute @config.has_value_for?("test")
+                    default = flexmock
+                    default.should_receive(:dup).and_return(default)
+                    assert_equal default, @config.get("test", default)
+                end
+                it "gets removed with a call to #reset_overrides with its name" do
+                    @config.reset_overrides("test")
+                    refute @config.has_value_for?("test")
+                    default = flexmock
+                    default.should_receive(:dup).and_return(default)
+                    assert_equal default, @config.get("test", default)
+                end
             end
             describe "overriding an existing value" do
                 before do
                     @config.set 'test', 'value'
                     @config.reset_modified
                     @config.override 'test', 'something'
+                end
+                it "still reports a set value" do
+                    assert @config.has_value_for?("test")
                 end
                 it "changes the value returned by #get" do
                     assert_equal 'something', @config.get('test')
@@ -155,6 +175,16 @@ module Autoproj
                     @config.override 'test', nil
                     assert_nil @config.get('test')
                     assert_equal Hash['test' => nil], @config.to_hash
+                end
+                it "gets removed with a call to #reset_overrides without arguments" do
+                    @config.reset_overrides
+                    assert @config.has_value_for?("test")
+                    assert_equal "value", @config.get("test")
+                end
+                it "gets removed with a call to #reset_overrides with its name" do
+                    @config.reset_overrides("test")
+                    assert @config.has_value_for?("test")
+                    assert_equal "value", @config.get("test")
                 end
             end
         end
@@ -358,7 +388,7 @@ module Autoproj
             it "disables interactive configuration setting through config option" do
                 option_name = "custom-configuration-option"
                 default_value = "option-defaultvalue"
-                @config.declare(option_name,"string",default: default_value)
+                @config.declare(option_name, "string", default: default_value)
 
                 @config.interactive = false
 
@@ -371,7 +401,7 @@ module Autoproj
             it "disables interactive configuration setting through ENV" do
                 option_name = "custom-configuration-option"
                 default_value = "option-defaultvalue"
-                @config.declare(option_name,"string",default: default_value)
+                @config.declare(option_name, "string", default: default_value)
 
                 ENV['AUTOPROJ_NONINTERACTIVE'] = '1'
 
@@ -388,7 +418,7 @@ module Autoproj
             it "use interactive configuration by default" do
                 option_name = "custom-configuration-option"
                 default_value = "option-defaultvalue"
-                @config.declare(option_name,"string",default: default_value)
+                @config.declare(option_name, "string", default: default_value)
                 assert @config.interactive?
                 assert_raises Timeout::Error do
                     Timeout.timeout(3) do
@@ -412,8 +442,8 @@ module Autoproj
                 default_b_value = "option-b-default-value"
                 b_value = "option-b-value"
 
-                @config.declare(option_a_name,"string",default: default_a_value)
-                @config.declare(option_b_name,"string",default: default_b_value)
+                @config.declare(option_a_name, "string", default: default_a_value)
+                @config.declare(option_b_name, "string", default: default_b_value)
 
                 @config.interactive = false
                 @config.configure(option_a_name)
@@ -435,5 +465,3 @@ module Autoproj
         end
     end
 end
-
-

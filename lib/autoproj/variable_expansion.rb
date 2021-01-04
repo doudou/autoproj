@@ -41,6 +41,7 @@ module Autoproj
             if prefix == "\\"
                 next(constant_name[1..-1])
             end
+
             if prefix == "$"
                 prefix, constant_name = "", constant_name[1..-1]
             else
@@ -75,6 +76,7 @@ module Autoproj
             if contains_expansion?(value)
                 raise ConfigError.new, "some expansions are not defined in #{value.inspect}"
             end
+
             value
         end
     end
@@ -97,7 +99,7 @@ module Autoproj
     # refers to variables defined in +constants+
     def self.resolve_constant_definitions(constants, definitions = Hash.new)
         definitions = definitions.merge(constants)
-        
+
         all_resolutions = Hash.new
         resolution_cache = Hash.new
         constants.each do |key, value|
@@ -106,4 +108,3 @@ module Autoproj
         all_resolutions
     end
 end
-

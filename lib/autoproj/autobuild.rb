@@ -16,4 +16,3 @@ end
 Autobuild::SVN.class_eval do
     prepend Autoproj::AutobuildExtensions::SVN
 end
-

@@ -19,7 +19,7 @@ module Autoproj
                     exec(*common_args, 'diff', parse_log_entry(since), 'autoproj@{0}')
                 elsif args.empty?
                     exec(*common_args, 'reflog',
-                        Ops::Snapshot.import_state_log_ref, '--format=%Cgreen%gd %Cblue%cr %Creset%gs')
+                         Ops::Snapshot.import_state_log_ref, '--format=%Cgreen%gd %Cblue%cr %Creset%gs')
                 elsif options[:diff]
                     exec(*common_args, 'diff', *args.map { |entry| parse_log_entry(entry) })
                 else

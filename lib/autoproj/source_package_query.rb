@@ -134,4 +134,3 @@ module Autoproj
     # For backward compatibility
     Query = SourcePackageQuery
 end
-

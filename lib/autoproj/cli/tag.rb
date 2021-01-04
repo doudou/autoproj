@@ -26,14 +26,15 @@ module Autoproj
                     all_tags = importer.run_git_bare(pkg, 'tag')
                     all_tags.sort.each do |tag|
                         next if tag =~ /\^/
+
                         begin importer.show(pkg, "refs/tags/#{tag}", versions_file)
-                            puts tag
+                              puts tag
                         rescue Autobuild::PackageException
                         end
                     end
                     return
                 end
-                
+
                 # Check if the tag already exists
                 begin
                     importer.rev_parse(pkg, "refs/tags/#{tag_name}")
@@ -42,7 +43,7 @@ module Autoproj
                 end
 
                 message = options[:message] ||
-                    "autoproj created tag #{tag_name}"
+                          "autoproj created tag #{tag_name}"
                 commit_id = Ops::Snapshot.create_commit(pkg, versions_file, message) do |io|
                     versions = CLI::Versions.new(ws)
                     Autoproj.message "creating versions file, this may take a while"
@@ -58,4 +59,3 @@ module Autoproj
         end
     end
 end
-

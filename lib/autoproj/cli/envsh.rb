@@ -2,8 +2,8 @@ require 'autoproj/cli/inspection_tool'
 module Autoproj
     module CLI
         class Envsh < InspectionTool
-            def validate_options(_unused, options = Hash.new)
-                _, options = super(_unused, options)
+            def validate_options(args, options = Hash.new)
+                _, options = super(args, options)
                 [options]
             end
 
@@ -16,4 +16,3 @@ module Autoproj
         end
     end
 end
-

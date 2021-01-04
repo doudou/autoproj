@@ -147,13 +147,15 @@ module Autoproj
         def initialize(
             ws, vcs,
             name: self.class.name_of(ws, vcs),
-            raw_local_dir: self.class.raw_local_dir_of(ws, vcs))
+            raw_local_dir: self.class.raw_local_dir_of(ws, vcs)
+        )
 
             @ws = ws
             @vcs = vcs
             if !vcs
                 raise ArgumentError, "cannot create a package set with a nil vcs, create a null VCS using VCSDefinition.none"
             end
+
             @name = name
             @os_repository_resolver = OSRepositoryResolver.new
             @os_package_resolver = OSPackageResolver.new(
@@ -170,8 +172,8 @@ module Autoproj
             @raw_local_dir = raw_local_dir
             @default_importer = VCSDefinition.from_raw({ type: 'none' })
 
-            @imports  = Set.new
-            @imports_vcs  = Array.new
+            @imports = Set.new
+            @imports_vcs = Array.new
             @imported_from = Array.new
             @explicit = false
             @auto_imports = true
@@ -209,15 +211,18 @@ module Autoproj
         # True if this source has already been checked out on the local autoproj
         # installation
         def present?; File.directory?(raw_local_dir) end
+
         # True if this is the main package set (i.e. the main autoproj
         # configuration)
         def main?; false end
+
         # True if this source is local, i.e. is not under a version control
         def local?; vcs.local? end
+
         # True if this source defines nothing
         def empty?
             version_control.empty? && overrides.empty?
-                !each_package.find { true } &&
+            !each_package.find { true } &&
                 !File.exist?(File.join(raw_local_dir, "overrides.rb")) &&
                 !File.exist?(File.join(raw_local_dir, "init.rb"))
         end
@@ -482,10 +487,10 @@ module Autoproj
             name = source_definition['name']
             if name !~ /^[\w\.-]+$/
                 raise ConfigError.new(source_file),
-                    "in #{source_file}: invalid source name '#{@name}': source names can only contain alphanumeric characters, and .-_"
+                      "in #{source_file}: invalid source name '#{@name}': source names can only contain alphanumeric characters, and .-_"
             elsif name == "local"
                 raise ConfigError.new(source_file),
-                    "in #{source_file}: the name 'local' is a reserved name"
+                      "in #{source_file}: the name 'local' is a reserved name"
             end
 
             parse_source_definition(source_definition)
@@ -513,7 +518,7 @@ module Autoproj
 
             if new_imports = source_definition['imports']
                 variables = inject_constants_and_config_for_expansion(Hash.new)
-                @imports_vcs  = Array(new_imports).map do |set_def|
+                @imports_vcs = Array(new_imports).map do |set_def|
                     if !set_def.kind_of?(Hash) && !set_def.respond_to?(:to_str)
                         raise ConfigError.new(source_file), "in #{source_file}: "\
                             "wrong format for 'imports' section. Expected an array of "\
@@ -522,8 +527,8 @@ module Autoproj
 
                     Autoproj.in_file(source_file) do
                         PackageSet.resolve_definition(ws, set_def, from: self,
-                            vars: variables,
-                            raw: [VCSDefinition::RawEntry.new(self, source_file, set_def)])
+                                                                   vars: variables,
+                                                                   raw: [VCSDefinition::RawEntry.new(self, source_file, set_def)])
                     end
                 end
             end
@@ -531,7 +536,7 @@ module Autoproj
             if new_version_control = source_definition['version_control']
                 invalidate_importer_definitions_cache
                 @version_control = normalize_vcs_list('version_control', source_file,
-                    new_version_control)
+                                                      new_version_control)
 
                 Autoproj.in_file(source_file) do
                     default_vcs_spec, raw = version_control_field(
@@ -540,7 +545,7 @@ module Autoproj
                     )
                     if default_vcs_spec
                         @default_importer = VCSDefinition.from_raw(default_vcs_spec,
-                            raw: raw, from: self)
+                                                                   raw: raw, from: self)
                     end
                 end
             end
@@ -794,6 +799,7 @@ module Autoproj
         # List the autobuild files that are part of this package set
         def each_autobuild_file
             return enum_for(__method__) if !block_given?
+
             Dir.glob(File.join(local_dir, "*.autobuild")).sort.each do |file|
                 yield(file)
             end
@@ -803,6 +809,7 @@ module Autoproj
         # set
         def each_osdeps_file
             return enum_for(__method__) if !block_given?
+
             Dir.glob(File.join(local_dir, "*.osdeps")).each do |file|
                 yield(file)
             end
@@ -812,10 +819,10 @@ module Autoproj
         # set
         def each_osrepos_file
             return enum_for(__method__) if !block_given?
+
             Dir.glob(File.join(local_dir, "*.osrepos")).each do |file|
                 yield(file)
             end
         end
     end
 end
-

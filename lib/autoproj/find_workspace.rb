@@ -33,6 +33,7 @@ module Autoproj
             if (path + ".autoproj" + "config.yml").exist?
                 break
             end
+
             path = path.parent
         end
 
@@ -59,16 +60,19 @@ module Autoproj
     def self.find_v2_root_dir(base_dir, config_field_name)
         path, config = find_v2_workspace_config(base_dir)
         return if !path
+
         result = config[config_field_name] || path.to_s
         result = File.expand_path(result, path.to_s)
         if result == path.to_s
             return result
         end
+
         resolved = find_v2_root_dir(result, config_field_name)
 
         if !resolved || (resolved != result)
             raise ArgumentError, "found #{path} as possible workspace root for #{base_dir}, but it contains a configuration file that points to #{result} and #{result} is not an autoproj workspace root"
         end
+
         resolved
     end
 
@@ -121,4 +125,3 @@ module Autoproj
         nil
     end
 end
-

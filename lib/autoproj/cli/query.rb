@@ -70,7 +70,7 @@ module Autoproj
                 fields['NAME']     = name
                 fields['PRIORITY'] = priority
                 fields['HANDLER']  = handler
-                fields['REAL_PACKAGE']  = real_package_name
+                fields['REAL_PACKAGE'] = real_package_name
                 Autoproj.expand(format, fields)
             end
 
@@ -119,4 +119,3 @@ module Autoproj
         end
     end
 end
-

@@ -37,21 +37,21 @@ module Autoproj
                     VCSDefinition.normalize_vcs_hash('dir')
                 end
                 assert_equal "VCS path 'dir' is relative and no base_dir was given",
-                    e.message
+                             e.message
             end
             it "raises if given a relative path that does not exist" do
                 e = assert_raises(ArgumentError) do
                     VCSDefinition.normalize_vcs_hash('dir', base_dir: root_dir)
                 end
                 assert_equal "'dir' is neither a remote source specification, nor an existing local directory",
-                    e.message
+                             e.message
             end
             it "raises if given a full path that does not exist" do
                 e = assert_raises(ArgumentError) do
                     VCSDefinition.normalize_vcs_hash('/full/dir', base_dir: root_dir)
                 end
                 assert_equal "'/full/dir' is neither a remote source specification, nor an existing local directory",
-                    e.message
+                             e.message
             end
 
             it "expands a source handler when the specification is a single string" do
@@ -77,7 +77,7 @@ module Autoproj
                     VCSDefinition.from_raw(url: 'test')
                 end
                 assert_equal  "the source specification { url: test } normalizes into { url: test }, which does not have a VCS type",
-                    e.message
+                              e.message
             end
             it "raises if the VCS has no URL and type is not 'none'" do
                 assert_raises(ArgumentError) do
@@ -111,7 +111,7 @@ module Autoproj
             it "registers the various versions of the history if the importer supports declare_alternate_repository" do
                 ws_create
                 base_package_set = ws_define_package_set 'base'
-                base_vcs     = Autoproj::VCSDefinition.from_raw(Hash[type: 'git', url: 'https://github.com'], from: base_package_set)
+                base_vcs = Autoproj::VCSDefinition.from_raw(Hash[type: 'git', url: 'https://github.com'], from: base_package_set)
                 override_package_set = ws_define_package_set 'override'
                 override_vcs = base_vcs.update(Hash[url: 'https://github.com/fork'], from: override_package_set)
                 importer = override_vcs.create_autobuild_importer
@@ -163,7 +163,7 @@ module Autoproj
             describe "null definitions" do
                 attr_reader :left
                 before do
-                    @left  = VCSDefinition.none
+                    @left = VCSDefinition.none
                 end
 
                 it "ignores all options for null definitions" do
@@ -182,7 +182,7 @@ module Autoproj
             describe "a local vcs receiver" do
                 attr_reader :left
                 before do
-                    @left  = VCSDefinition.from_raw(type: 'local', url: '/path/to', garbage_option: true)
+                    @left = VCSDefinition.from_raw(type: 'local', url: '/path/to', garbage_option: true)
                 end
 
                 it "only compares against the URL for local VCS" do
@@ -200,7 +200,7 @@ module Autoproj
             describe "an non-local, non-null definition" do
                 attr_reader :left
                 before do
-                    @left  = VCSDefinition.from_raw(type: 'git', url: '/path/to', branch: 'master')
+                    @left = VCSDefinition.from_raw(type: 'git', url: '/path/to', branch: 'master')
                 end
 
                 it "returns false for a null VCS" do

@@ -39,7 +39,7 @@ module Autoproj
                 config_selected = false
                 selection.delete_if do |name|
                     if name =~ /^#{Regexp.quote(ws.config_dir)}(?:#{File::SEPARATOR}|$)/ ||
-                        name =~ /^#{Regexp.quote(ws.remotes_dir)}(?:#{File::SEPARATOR}|$)/
+                       name =~ /^#{Regexp.quote(ws.remotes_dir)}(?:#{File::SEPARATOR}|$)/
                         config_selected = true
                     elsif (ws.config_dir + File::SEPARATOR) =~ /^#{Regexp.quote(name)}/
                         config_selected = true
@@ -80,6 +80,7 @@ module Autoproj
                 nonresolved.delete_if do |sel|
                     sel = File.expand_path(sel)
                     next if !File.directory?(sel)
+
                     while sel != '/'
                         handler, srcdir = Autoproj.package_handler_for(sel)
                         if handler
@@ -190,14 +191,14 @@ module Autoproj
 
             def self.validate_options(args, options)
                 options, remaining = filter_options options,
-                    silent: false,
-                    verbose: false,
-                    debug: false,
-                    color: default_color_enabled?,
-                    progress: true,
-                    progress_mode: default_progress_mode,
-                    progress_period: 1,
-                    parallel: nil
+                                                    silent: false,
+                                                    verbose: false,
+                                                    debug: false,
+                                                    color: default_color_enabled?,
+                                                    progress: true,
+                                                    progress_mode: default_progress_mode,
+                                                    progress_period: 1,
+                                                    parallel: nil
 
                 Autoproj.silent = options[:silent]
                 Autobuild.color = options[:color]
@@ -218,7 +219,6 @@ module Autoproj
                     Rake.application.options.trace = true
                     Autobuild.debug = true
                 end
-
 
                 if level = options[:parallel]
                     Autobuild.parallel_build_level = Integer(level)
@@ -251,4 +251,3 @@ module Autoproj
         end
     end
 end
-

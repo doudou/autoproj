@@ -43,7 +43,7 @@ module Autoproj
                     pkg_set1 = flexmock('set1', imports: [pkg_set0], explicit?: true)
                     root_pkg_set = flexmock('root', imports: [pkg_set0, pkg_set1], explicit?: true)
                     assert_equal [pkg_set0, pkg_set1, root_pkg_set],
-                        ops.sort_package_sets_by_import_order([root_pkg_set, pkg_set1, pkg_set0], root_pkg_set)
+                                 ops.sort_package_sets_by_import_order([root_pkg_set, pkg_set1, pkg_set0], root_pkg_set)
                 end
             end
 
@@ -122,9 +122,9 @@ module Autoproj
                     end
                     it "collects the errors and raises an ImportFailed at the end of import" do
                         test0_vcs, _ = mock_package_set 'test0', type: 'git', url: '/test0',
-                            create: true
+                                                                 create: true
                         test1_vcs, _ = mock_package_set 'test1', type: 'git', url: '/test1',
-                            create: true
+                                                                 create: true
                         ops.should_receive(:update_remote_package_set).
                             with(test0_vcs, Hash).once.
                             and_raise(error0 = Class.new(RuntimeError))
@@ -173,7 +173,7 @@ module Autoproj
 
                     it "redirects package sets that import a colliding package set to the first" do
                         importing_pkg_set = ws_create_git_package_set 'importing.pkg.set',
-                            'imports' => Array['type' => 'git', 'url' => pkg_set_1]
+                                                                      'imports' => Array['type' => 'git', 'url' => pkg_set_1]
                         root_package_set.add_raw_imported_set \
                             VCSDefinition.from_raw('type' => 'git', 'url' => importing_pkg_set)
                         package_sets, _ = ops.load_and_update_package_sets(root_package_set)
@@ -215,7 +215,7 @@ module Autoproj
                         assert_equal pkg_set_0, package_sets[1].vcs.url
                         assert_equal importing_pkg_set, package_sets[2].vcs.url
 
-                        imported  = package_sets[1]
+                        imported = package_sets[1]
                         other_importing = package_sets[3]
                         assert_equal other_importing_pkg_set, other_importing.vcs.url
                         assert imported.imported_from.include?(other_importing)
@@ -609,4 +609,3 @@ module Autoproj
         end
     end
 end
-

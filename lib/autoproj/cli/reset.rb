@@ -39,8 +39,7 @@ module Autoproj
                     end
 
                     update = CLI::Update.new
-                    run_args = update.run([], reset: true)
-
+                    update.run([], reset: true)
                 ensure
                     if !options[:freeze]
                         FileUtils.rm_f versions_path
@@ -53,4 +52,3 @@ module Autoproj
         end
     end
 end
-

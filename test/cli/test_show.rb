@@ -137,7 +137,7 @@ module Autoproj
                     end
                     out
                 end
-                
+
                 it "displays the package set name" do
                     assert_displays 'rock.core', "package set rock.core"
                 end
@@ -148,8 +148,8 @@ module Autoproj
                     flexmock(pkg_set).should_receive(:raw_local_dir).and_return('/raw/dir')
                     flexmock(pkg_set).should_receive(:user_local_dir).and_return('/user/dir')
                     assert_displays 'rock.core',
-                        "  checkout dir: /raw/dir",
-                        "  symlinked to: /user/dir"
+                                    "  checkout dir: /raw/dir",
+                                    "  symlinked to: /user/dir"
                 end
                 it "displays the only one dir if the raw and user dirs are the same" do
                     flexmock(pkg_set).should_receive(:raw_local_dir).and_return('/raw/dir')
@@ -179,7 +179,7 @@ module Autoproj
                     ws_define_package :cmake, 'bbb', package_set: pkg_set
                     ws_define_package :cmake, 'aaa', package_set: pkg_set
                     assert_displays 'rock.core', '  refers to 2 packages', '    aaa,', '    bbb',
-                        package_per_line: 1
+                                    package_per_line: 1
                 end
             end
 
@@ -226,14 +226,13 @@ module Autoproj
                     ws_define_osdep_entries Hash['test' => 'gem'], file: 'first'
                     ws_define_osdep_entries Hash['test' => Hash['test_os_family' => 'apt_test']], file: 'second'
                     assert_displays 'test', true,
-                        "  2 matching entries:",
-                        "    in first:",
-                        "        gem",
-                        "    in second:",
-                        "        test_os_family: apt_test"
+                                    "  2 matching entries:",
+                                    "    in first:",
+                                    "        gem",
+                                    "    in second:",
+                                    "        test_os_family: apt_test"
                 end
             end
         end
     end
 end
-

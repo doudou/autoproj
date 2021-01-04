@@ -80,7 +80,6 @@ module Autoproj
                 fake_package.importer.retry_count = retry_count
             end
             fake_package.import(only_local: only_local, reset: reset)
-
         rescue Autobuild::ConfigException => e
             raise ConfigError.new, "cannot import #{name}: #{e.message}", e.backtrace
         end
@@ -230,8 +229,8 @@ module Autoproj
                     failed = handle_keep_going(keep_going, vcs, failures) do
                         update_remote_package_set(
                             vcs, checkout_only: checkout_only,
-                            only_local: only_local, reset: reset,
-                            retry_count: retry_count)
+                                 only_local: only_local, reset: reset,
+                                 retry_count: retry_count)
                     end
                     raw_local_dir = PackageSet.raw_local_dir_of(ws, vcs)
 
@@ -246,7 +245,7 @@ module Autoproj
 
                 name = PackageSet.name_of(ws, vcs)
 
-                required_user_dirs = by_name.collect { |k,v| k }
+                required_user_dirs = by_name.collect { |k, v| k }
                 Autoproj.debug "Trying to load package_set: #{name} from definition #{repository_id}"
                 Autoproj.debug "Already loaded package_sets are: #{required_user_dirs}"
 
@@ -285,7 +284,7 @@ module Autoproj
                 queue_auto_imports_if_needed(queue, pkg_set, root_pkg_set)
             end
 
-            required_user_dirs = by_name.collect { |k,v| k }
+            required_user_dirs = by_name.collect { |k, v| k }
             cleanup_remotes_dir(package_sets, required_remotes_dirs)
             cleanup_remotes_user_dir(package_sets, required_user_dirs)
 
@@ -369,16 +368,18 @@ module Autoproj
             if result.last != root_pkg_set
                 raise InternalError, "failed to sort the package sets: the root package set should be last, but is not"
             end
+
             result
         end
 
         def load_package_sets(
-                only_local: false,
+            only_local: false,
                 checkout_only: true,
                 keep_going: false,
                 reset: false,
                 retry_count: nil,
-                mainline: nil)
+                mainline: nil
+        )
             update_configuration(
                 only_local: only_local,
                 checkout_only: checkout_only,
@@ -411,12 +412,13 @@ module Autoproj
         end
 
         def update_configuration(
-                only_local: false,
+            only_local: false,
                 checkout_only: !Autobuild.do_update,
                 keep_going: false,
                 reset: false,
                 retry_count: nil,
-                mainline: nil)
+                mainline: nil
+        )
 
             if ws.manifest.vcs.needs_import?
                 main_configuration_failure = update_main_configuration(
@@ -513,6 +515,7 @@ module Autoproj
             explicit.each do |pkg_or_set, layout_level|
                 next if manifest.find_autobuild_package(pkg_or_set)
                 next if manifest.has_package_set?(pkg_or_set)
+
                 full_path = File.expand_path(File.join(ws.source_dir, layout_level, pkg_or_set))
                 next if !File.directory?(full_path)
 
@@ -521,7 +524,6 @@ module Autoproj
                 else
                     Autoproj.warn "cannot auto-add #{pkg_or_set}: unknown package type"
                 end
-
             end
         end
 
@@ -624,4 +626,3 @@ module Autoproj
     end
     end
 end
-

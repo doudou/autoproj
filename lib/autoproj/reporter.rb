@@ -5,6 +5,7 @@ module Autoproj
         def silent?
             Autobuild.silent?
         end
+
         def silent=(value)
             Autobuild.silent = value
         end
@@ -113,16 +114,17 @@ module Autoproj
                 end
             end
 
-
         if package_failures.empty?
             raise interrupted if interrupted
 
             Autobuild::Reporting.success if on_package_success == :report
             return []
         else
-            Autobuild::Reporting.report_finish_on_error(package_failures,
+            Autobuild::Reporting.report_finish_on_error(
+                package_failures,
                 on_package_failures: on_package_failures,
-                interrupted_by: interrupted)
+                interrupted_by: interrupted
+            )
         end
     rescue CLI::CLIException, InvalidWorkspace, ConfigError => e
         if silent_errors

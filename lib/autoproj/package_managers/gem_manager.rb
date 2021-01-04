@@ -92,7 +92,7 @@ module Autoproj
             end
 
             @gem_home = nil
-            
+
             # Returns the set of default options that are added to gem
             #
             # By default, we add --no-user-install to un-break distributions
@@ -132,7 +132,7 @@ module Autoproj
 
                 candidates = ['gem']
                 if ruby_bin =~ /^ruby(.+)$/
-                    candidates << "gem#{$1}" 
+                    candidates << "gem#{$1}"
                 end
 
                 candidates.each do |gem_name|
@@ -195,8 +195,8 @@ module Autoproj
 
                     cmdlines.each do |c|
                         Autobuild::Subprocess.run 'autoproj', 'osdeps', *c,
-                            env: Hash['GEM_HOME' => Gem.paths.home,
-                                      'GEM_PATH' => Gem.paths.path.join(":")]
+                                                  env: Hash['GEM_HOME' => Gem.paths.home,
+                                                            'GEM_PATH' => Gem.paths.path.join(":")]
                     end
                     gems.each do |name, v|
                         installed_gems << name
@@ -209,7 +209,7 @@ module Autoproj
             # installed, or that can be upgraded
             def filter_uptodate_packages(gems, options = Hash.new)
                 options = validate_options options,
-                    install_only: !Autobuild.do_update
+                                           install_only: !Autobuild.do_update
 
                 # Don't install gems that are already there ...
                 gems = gems.dup
@@ -313,4 +313,3 @@ module Autoproj
         end
     end
 end
-

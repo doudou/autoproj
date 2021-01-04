@@ -104,6 +104,7 @@ module Autoproj
 
             def each_package_name(&block)
                 return enum_for(__method__) if !block
+
                 each_source_package_name(&block)
                 each_osdep_package_name(&block)
             end
@@ -125,10 +126,10 @@ module Autoproj
                 source_packages
             end
 
-            def select(sel, packages, *_backward, weak: false, osdep: false)
-                unless _backward.empty?
+            def select(sel, packages, *backward, weak: false, osdep: false)
+                unless backward.empty?
                     Autoproj.warn_deprecated "calling PackageSelection#select with a boolean as third argument", "use e.g. weak: true instead", 0
-                    weak = _backward.first
+                    weak = backward.first
                 end
 
                 packages = Array(packages).to_set
@@ -219,4 +220,3 @@ module Autoproj
             end
         end
 end
-

@@ -17,17 +17,18 @@ module Autoproj
                 [epoch, upstream_version, debian_revision]
             end
 
-            def <=>(b)
+            def <=>(other)
                 (0..2).inject(0) do |result, i|
                     return result unless result == 0
-                    normalize(compare_fragments(self.split[i], b.split[i]))
+
+                    normalize(compare_fragments(self.split[i], other.split[i]))
                 end
             end
 
             def self.compare(a, b)
-                new(a)<=>new(b)
+                new(a) <=> new(b)
             end
-        
+
             private
 
             def normalize(value)
@@ -89,7 +90,8 @@ module Autoproj
                     while i != a.size && j != b.size && (!digit?(a[i]) || !digit?(b[j]))
                         vc = order(a[i])
                         rc = order(b[j])
-                        return vc-rc if vc != rc
+                        return vc - rc if vc != rc
+
                         i += 1
                         j += 1
                     end
@@ -111,10 +113,12 @@ module Autoproj
 
                 if i == a.size
                     return 1 if b[j] == '~'
+
                     return -1
                 end
                 if j == b.size
                     return -1 if a[i] == '~'
+
                     return 1
                 end
             end

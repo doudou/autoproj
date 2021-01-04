@@ -13,24 +13,24 @@ module Autoproj
 
             it "installs fine when using the default gem source" do
                 shared_dir = make_tmpdir
-                autoproj_dir  = find_gem_dir('autoproj').full_gem_path
+                autoproj_dir = find_gem_dir('autoproj').full_gem_path
                 autobuild_dir = find_gem_dir('autobuild').full_gem_path
                 gemfile_source = "source \"https://rubygems.org\"
 gem 'autoproj', path: '#{autoproj_dir}'
 gem 'autobuild', path: '#{autobuild_dir}'"
 
                 invoke_test_script 'install.sh',
-                    use_autoproj_from_rubygems: true,
-                    env: Hash['HOME' => shared_dir],
-                    gemfile_source: gemfile_source
+                                   use_autoproj_from_rubygems: true,
+                                   env: Hash['HOME' => shared_dir],
+                                   gemfile_source: gemfile_source
             end
 
             it "may install non-interactively" do
                 shared_dir = make_tmpdir
                 invoke_test_script 'install.sh',
-                    env: Hash['HOME' => shared_dir],
-                    interactive: false,
-                    seed_config: nil
+                                   env: Hash['HOME' => shared_dir],
+                                   interactive: false,
+                                   seed_config: nil
             end
 
             it "the non-interactive installs also ignore non-empty directories" do
@@ -38,10 +38,10 @@ gem 'autobuild', path: '#{autobuild_dir}'"
                 install_dir = make_tmpdir
                 FileUtils.touch File.join(install_dir, "somefile")
                 invoke_test_script 'install.sh',
-                    env: Hash['HOME' => shared_dir],
-                    dir: install_dir,
-                    interactive: false,
-                    seed_config: nil
+                                   env: Hash['HOME' => shared_dir],
+                                   dir: install_dir,
+                                   interactive: false,
+                                   seed_config: nil
             end
 
             describe 'running autoproj_install in an existing workspace' do
@@ -82,7 +82,7 @@ gem 'autobuild', path: '#{autobuild_dir}'"
                         shared_dir, '.local', 'share', 'autoproj',
                         'gems', Autoproj::Configuration.gems_path_suffix)
                     @install_dir, = invoke_test_script 'install.sh',
-                        env: Hash['HOME' => shared_dir]
+                                                       env: Hash['HOME' => shared_dir]
                 end
 
                 it "saves a shim to the installed bundler" do
@@ -108,8 +108,8 @@ gem 'autobuild', path: '#{autobuild_dir}'"
                 it "sets the environment so that the shared bundler is found" do
                     shim_path = File.join(install_dir, '.autoproj', 'bin', 'bundle')
                     _, stdout, = invoke_test_script 'bundler-path.sh',
-                        dir: install_dir,
-                        chdir: File.join(install_dir, '.autoproj')
+                                                    dir: install_dir,
+                                                    chdir: File.join(install_dir, '.autoproj')
                     bundler_bin_path, bundler_gem_path =
                         stdout.chomp.split("\n")
                     assert_equal bundler_bin_path, shim_path
@@ -141,7 +141,7 @@ gem 'autobuild', path: '#{autobuild_dir}'"
                     @shared_dir = make_tmpdir
                     @shared_gem_home = File.join(shared_dir, Autoproj::Configuration.gems_path_suffix)
                     @install_dir, = invoke_test_script 'install.sh',
-                        "--gems-path=#{shared_dir}"
+                                                       "--gems-path=#{shared_dir}"
                 end
 
                 it "saves a shim to the installed bundler" do
@@ -166,8 +166,8 @@ gem 'autobuild', path: '#{autobuild_dir}'"
                 it "sets the environment so that the shared bundler is found" do
                     shim_path = File.join(install_dir, '.autoproj', 'bin', 'bundle')
                     _, stdout, = invoke_test_script 'bundler-path.sh',
-                        dir: install_dir,
-                        chdir: File.join(install_dir, '.autoproj')
+                                                    dir: install_dir,
+                                                    chdir: File.join(install_dir, '.autoproj')
 
                     bundler_bin_path, bundler_gem_path =
                         stdout.chomp.split("\n")

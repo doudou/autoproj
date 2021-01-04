@@ -10,6 +10,7 @@ module Autoproj
             def pick_from_autoproj_root(package, installation_manifest)
                 other_pkg = installation_manifest[package.name]
                 return if !other_pkg || !File.directory?(other_pkg.srcdir)
+
                 self.relocate(other_pkg.srcdir)
                 true
             end
@@ -49,12 +50,12 @@ module Autoproj
                 # We have to normalize the branch and tag names
                 if snapshot_local = (snapshot['local_branch'] || snapshot['branch'])
                     snapshot_local = normalize_branch_name(snapshot_local)
-                    local_branch  = normalize_branch_name(self.local_branch)
+                    local_branch = normalize_branch_name(self.local_branch)
                     return true if snapshot_local != local_branch
                 end
                 if snapshot_remote = (snapshot['remote_branch'] || snapshot['branch'])
                     snapshot_remote = normalize_branch_name(snapshot_remote)
-                    remote_branch  = normalize_branch_name(self.remote_branch)
+                    remote_branch = normalize_branch_name(self.remote_branch)
                     return true if snapshot_remote != remote_branch
                 end
                 if snapshot_id = snapshot['commit']

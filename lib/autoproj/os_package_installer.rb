@@ -22,15 +22,15 @@ module Autoproj
 
         PACKAGE_MANAGERS = Hash[
            'apt-dpkg' => PackageManagers::AptDpkgManager,
-           'gem'      => PackageManagers::BundlerManager,
-           'emerge'   => PackageManagers::EmergeManager,
-           'pacman'   => PackageManagers::PacmanManager,
-           'brew'     => PackageManagers::HomebrewManager,
-           'yum'      => PackageManagers::YumManager,
+           'gem' => PackageManagers::BundlerManager,
+           'emerge' => PackageManagers::EmergeManager,
+           'pacman' => PackageManagers::PacmanManager,
+           'brew' => PackageManagers::HomebrewManager,
+           'yum' => PackageManagers::YumManager,
            'macports' => PackageManagers::PortManager,
-           'zypper'   => PackageManagers::ZypperManager,
-           'pip'      => PackageManagers::PipManager ,
-           'pkg'      => PackageManagers::PkgManager
+           'zypper' => PackageManagers::ZypperManager,
+           'pip' => PackageManagers::PipManager,
+           'pkg' => PackageManagers::PkgManager
         ]
 
         attr_reader :os_package_resolver
@@ -117,16 +117,16 @@ about the OS packages that you will need to install manually.
 
 So, what do you want ? (all, none or a comma-separated list of: gem pip)
             EOT
-            message = [ "Which prepackaged software (a.k.a. 'osdeps') should autoproj install automatically (all, none or a comma-separated list of: gem pip) ?", long_doc.strip ]
+            message = ["Which prepackaged software (a.k.a. 'osdeps') should autoproj install automatically (all, none or a comma-separated list of: gem pip) ?", long_doc.strip]
 
             config.declare 'osdeps_mode', 'string',
-                default: 'ruby',
-                doc: message,
-                lowercase: true
+                           default: 'ruby',
+                           doc: message,
+                           lowercase: true
         end
 
         def osdeps_mode_option_supported_os(config)
-            long_doc =<<-EOT
+            long_doc = <<-EOT
 The software packages that autoproj will have to build may require other
 prepackaged softwares (a.k.a. OS dependencies) to be installed (RubyGems
 packages, packages from your operating system/distribution, ...). Autoproj
@@ -158,7 +158,7 @@ about the OS packages that you will need to install manually.
 
 So, what do you want ? (all, none or a comma-separated list of: os gem pip)
             EOT
-            message = [ "Which prepackaged software (a.k.a. 'osdeps') should autoproj install automatically (all, none or a comma-separated list of: os gem pip) ?", long_doc.strip ]
+            message = ["Which prepackaged software (a.k.a. 'osdeps') should autoproj install automatically (all, none or a comma-separated list of: os gem pip) ?", long_doc.strip]
 
             config.declare 'osdeps_mode', 'string',
                            default: 'all',
@@ -185,6 +185,7 @@ So, what do you want ? (all, none or a comma-separated list of: os gem pip)
                 when 'pip'  then modes << 'pip'
                 when 'os'   then modes << 'os'
                 when 'none' then
+                    # noop
                 else
                     if package_managers.key?(str)
                         modes << str
@@ -381,6 +382,7 @@ So, what do you want ? (all, none or a comma-separated list of: os gem pip)
                     if !manager_selected.empty?
                         raise InternalError, "requesting to install the osdeps #{partitioned_packages[manager].to_a.sort.join(", ")} through #{manager_name} but the complete list of osdep packages managed by this manager was not provided. This would break the workspace"
                     end
+
                     next
                 end
 
@@ -413,7 +415,7 @@ So, what do you want ? (all, none or a comma-separated list of: os gem pip)
 
                     partitioned_packages[nested_manager] += deps
                     partitioned_packages = resolve_managers_dependencies(partitioned_packages) if enable_recursion
-               end
+                end
             end
             partitioned_packages
         end
@@ -451,4 +453,3 @@ So, what do you want ? (all, none or a comma-separated list of: os gem pip)
         end
     end
 end
-

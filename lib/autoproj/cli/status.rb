@@ -211,7 +211,6 @@ module Autoproj
                     yield(pkg, status)
                 end
                 result
-
             rescue Interrupt
                 Autoproj.warn "Interrupted, waiting for pending jobs to finish"
                 raise
@@ -288,4 +287,3 @@ module Autoproj
         end
     end
 end
-

@@ -13,7 +13,7 @@ module Autoproj
 
             def validate_options(unused, options = {})
                 _, options = super(unused, options)
-                @show_events   = options[:show_events]
+                @show_events = options[:show_events]
                 nil
             end
 
@@ -66,11 +66,12 @@ module Autoproj
                 notifier.watch(dir, :move, :create, :delete, :modify, :dont_follow, *inotify_flags) do |e|
                     file_name = e.absolute_name[strip_dir_range]
                     included = included_paths.empty? ||
-                        included_paths.any? { |rx| rx === file_name }
+                               included_paths.any? { |rx| rx === file_name }
                     if included
                         included = !excluded_paths.any? { |rx| rx === file_name }
                     end
                     next if !included
+
                     Autobuild.message "#{e.absolute_name} changed" if show_events?
                     callback
                 end
@@ -79,6 +80,7 @@ module Autoproj
             def create_src_pkg_watchers
                 @source_packages_dirs.each do |pkg_srcdir|
                     next unless File.exist? pkg_srcdir
+
                     create_dir_watcher(pkg_srcdir, included_paths: ["manifest.xml", "package.xml"])
 
                     manifest_file = File.join(pkg_srcdir, 'manifest.xml')
@@ -92,12 +94,12 @@ module Autoproj
                 create_file_watcher(ws.config.path)
                 create_src_pkg_watchers
                 create_dir_watcher(ws.config_dir,
-                    excluded_paths: [/(^|#{File::SEPARATOR})\./],
-                    inotify_flags: [:recursive])
+                                   excluded_paths: [/(^|#{File::SEPARATOR})\./],
+                                   inotify_flags: [:recursive])
                 FileUtils.mkdir_p ws.remotes_dir
                 create_dir_watcher(ws.remotes_dir,
-                    excluded_paths: [/(^|#{File::SEPARATOR})\./],
-                    inotify_flags: [:recursive])
+                                   excluded_paths: [/(^|#{File::SEPARATOR})\./],
+                                   inotify_flags: [:recursive])
             end
 
             def cleanup_notifier

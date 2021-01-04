@@ -95,7 +95,7 @@ module Autoproj
                 assert manifest.excluded?(package)
                 assert manifest.excluded_in_manifest?(package)
                 assert_equal "test is listed in the exclude_packages section of the manifest",
-                    manifest.exclusion_reason(package)
+                             manifest.exclusion_reason(package)
             end
             it "is initialized by a package set name listed in the exclude_packages list in the manifest file" do
                 manifest.initialize_from_hash('exclude_packages' => ['test'])
@@ -104,7 +104,7 @@ module Autoproj
                 assert manifest.excluded?(package)
                 assert manifest.excluded_in_manifest?(package)
                 assert_equal "test is a metapackage listed in the exclude_packages section of the manifest, and it includes pkg",
-                    manifest.exclusion_reason(package)
+                             manifest.exclusion_reason(package)
             end
             it "can clear the exclusions specified in the manifest file" do
                 manifest.initialize_from_hash('exclude_packages' => ['test'])
@@ -164,7 +164,7 @@ module Autoproj
                 assert manifest.excluded?(package)
                 refute manifest.excluded_in_manifest?(package)
                 assert_equal "test is an excluded metapackage, and it includes pkg: for testing",
-                    manifest.exclusion_reason(package)
+                             manifest.exclusion_reason(package)
             end
             it "raises PackageNotFound if a package name cannot be resolved into a package object" do
                 assert_raises(PackageNotFound) do
@@ -358,7 +358,7 @@ module Autoproj
                 end
 
                 assert_equal Set['direct_package', 'dependency_package', 'dependency_os_package', 'direct_os_package'],
-                    manifest.all_selected_packages.to_set
+                             manifest.all_selected_packages.to_set
             end
         end
 
@@ -373,7 +373,7 @@ module Autoproj
                 end
 
                 assert_equal Set['direct_package', 'direct_os_package'],
-                    manifest.default_packages.each_package_name.to_set
+                             manifest.default_packages.each_package_name.to_set
             end
 
             it "returns the set of defined source packages if no layout is given" do
@@ -385,7 +385,7 @@ module Autoproj
                 end
 
                 assert_equal Set['direct_package', 'dependency_package'],
-                    manifest.default_packages.each_package_name.to_set
+                             manifest.default_packages.each_package_name.to_set
             end
         end
 
@@ -399,7 +399,7 @@ module Autoproj
                         ]]
                     ])
                 assert_equal Hash['root_pkg' => '/', 'child_pkg' => '/sub/'],
-                    manifest.normalized_layout
+                             manifest.normalized_layout
             end
         end
 
@@ -619,9 +619,9 @@ module Autoproj
             attr_reader :pkg, :pkg_set
             before do
                 @pkg_set = ws_define_package_set 'pkg_set',
-                    raw_local_dir: File.join(ws.root_dir, 'pkg_set')
+                                                 raw_local_dir: File.join(ws.root_dir, 'pkg_set')
                 @pkg = ws_add_package_to_layout :cmake, 'test',
-                    package_set: pkg_set
+                                                package_set: pkg_set
             end
             it "warns if no package set can be found" do
                 flexmock(Autoproj).should_receive(:warn).
@@ -638,7 +638,7 @@ module Autoproj
             end
             it "falls back on the package set's manifest if it has one" do
                 manifest_path = ws_create_package_set_file pkg_set,
-                    'manifests/test.xml', "<package />"
+                                                           'manifests/test.xml', "<package />"
                 flexmock(PackageManifest).should_receive(:load).
                     with(pkg.autobuild, manifest_path, ros_manifest: false).
                     once.pass_thru
@@ -653,7 +653,7 @@ module Autoproj
                 manifest.load_package_manifest(pkg)
             end
             it "ignores a package.xml if it is not explicitely enabled" do
-                manifest_path = ws_create_package_file pkg, 'package.xml', "<package />"
+                ws_create_package_file pkg, 'package.xml', "<package />"
                 flexmock(Autoproj).should_receive(:warn).
                     with("test from pkg_set does not have a manifest").
                     once
@@ -672,7 +672,7 @@ module Autoproj
                 ws_create_package_file pkg, 'manifest.xml', "<package />"
                 ws_create_package_set_file pkg_set, 'manifests/test.xml', "<package />"
                 manifest_path = ws_create_package_file pkg,
-                    'package.xml', "<package />"
+                                                       'package.xml', "<package />"
                 flexmock(PackageManifest).should_receive(:load).
                     with(pkg.autobuild, manifest_path, ros_manifest: true).
                     once.pass_thru
@@ -696,7 +696,7 @@ module Autoproj
             end
             it "applies the dependencies from the manifest to the package" do
                 ws_create_package_file pkg, 'manifest.xml',
-                    "<package><depend package=\"dependency\" /></package>"
+                                       "<package><depend package=\"dependency\" /></package>"
                 ws_define_package :cmake, 'dependency'
                 flexmock(pkg.autobuild).should_receive(:depends_on).
                     with('dependency').once.pass_thru
@@ -704,7 +704,7 @@ module Autoproj
             end
             it "applies the optional dependencies from the manifest to the package" do
                 ws_create_package_file pkg, 'manifest.xml',
-                    "<package><depend_optional package=\"dependency\" /></package>"
+                                       "<package><depend_optional package=\"dependency\" /></package>"
                 ws_define_package :cmake, 'dependency'
                 flexmock(pkg.autobuild).should_receive(:optional_dependency).
                     with('dependency').once.pass_thru
@@ -713,7 +713,7 @@ module Autoproj
             it "adds a reference to the manifest file in the error message "\
                 "if it refers to a package that does not exist" do
                 manifest_path = ws_create_package_file pkg, "manifest.xml",
-                    "<package><depend package=\"dependency\" /></package>"
+                                                       "<package><depend package=\"dependency\" /></package>"
                 e = assert_raises(PackageNotFound) do
                     manifest.load_package_manifest(pkg)
                 end
@@ -744,7 +744,7 @@ module Autoproj
                     manifest.load_importers
                 end
                 assert_equal "package set pkg.set defines the package 'test', but does not provide a version control definition for it",
-                    e.message
+                             e.message
             end
 
             it "allows the main package set to have no definition for a package" do
@@ -792,7 +792,7 @@ module Autoproj
                 end
             end
             it "raises if there is a different package set in self with the same name" do
-                pkg_set = ws_define_package_set "pkg_set"
+                ws_define_package_set "pkg_set"
                 assert_raises(UnregisteredPackageSet) do
                     @ws.manifest.validate_package_set_in_self(flexmock(name: 'test'))
                 end

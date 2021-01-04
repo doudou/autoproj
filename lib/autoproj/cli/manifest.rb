@@ -26,6 +26,7 @@ module Autoproj
                         if !File.file?(alternative_full_path)
                             raise CLIInvalidArguments, "neither #{full_path} nor #{alternative_full_path} exist"
                         end
+
                         full_path = alternative_full_path
                     end
                     begin
@@ -47,4 +48,3 @@ module Autoproj
         end
     end
 end
-

@@ -18,7 +18,7 @@ module Autoproj
         #   the current state
         # @param [Array<String=>Hash>] state the current state
         # @param [Hash] the updated information
-        def self.merge_packets( overrides, state )
+        def self.merge_packets(overrides, state)
             overriden = overrides.map { |entry| entry.keys.first }.to_set
             filtered_state = state.find_all do |pkg|
                 name, _ = pkg.first
@@ -40,18 +40,18 @@ module Autoproj
                 pkgs.sort_by { |vcs| vcs.keys.first }
         end
 
-        def save_versions( versions, versions_file, replace: false)
+        def save_versions(versions, versions_file, replace: false)
             existing_versions = Array.new
             if !replace && File.exist?(versions_file)
-                existing_versions = YAML.load( File.read( versions_file ) ) ||
-                    Array.new
+                existing_versions = YAML.load(File.read(versions_file)) ||
+                                    Array.new
             end
 
             # create direcotry for versions file first
-            FileUtils.mkdir_p(File.dirname( versions_file ))
+            FileUtils.mkdir_p(File.dirname(versions_file))
 
             # augment the versions file with the updated versions
-            versions = Snapshot.merge_packets( versions, existing_versions )
+            versions = Snapshot.merge_packets(versions, existing_versions)
 
             versions = sort_versions(versions)
 
@@ -61,7 +61,7 @@ module Autoproj
             end
         end
 
-        def self.snapshot( packages, target_dir )
+        def self.snapshot(packages, target_dir)
             # todo
         end
 
@@ -121,10 +121,11 @@ module Autoproj
             result = Array.new
             fingerprint_memo = Hash.new
             packages.each do |package_name|
-                package  = manifest.find_package_definition(package_name)
+                package = manifest.find_package_definition(package_name)
                 if !package
                     raise ArgumentError, "#{package_name} is not a known package"
                 end
+
                 importer = package.autobuild.importer
                 if !importer
                     error_or_warn(package, "cannot snapshot #{package_name} as it has no importer")
@@ -179,6 +180,7 @@ module Autoproj
             if !pkg.importer.kind_of?(Autobuild::Git)
                 raise ArgumentError, "cannot use autoproj auto-import feature if the main configuration is not managed under git"
             end
+
             pkg
         end
 
@@ -212,7 +214,7 @@ module Autoproj
                     find_all { |pkg| File.directory?(pkg.autobuild.srcdir) }.
                     map(&:name)
             end
-            versions  = snapshot_package_sets
+            versions = snapshot_package_sets
             versions += snapshot_packages(packages)
             versions = Snapshot.merge_packets(versions, current_versions)
             save_import_state(name, versions)
@@ -220,7 +222,7 @@ module Autoproj
 
         def save_import_state(name, versions)
             versions = sort_versions(versions)
-            
+
             main = import_state_log_package
             git_dir = main.importer.git_dir(main, false)
             # Ensure that our ref is being logged
@@ -242,7 +244,7 @@ module Autoproj
         # It creates a temporary file and gives it to the block so that the file
         # gets filled with the new content
         #
-        # @yieldparam [Tempfile] io a temporary file 
+        # @yieldparam [Tempfile] io a temporary file
         # @param [Autobuild::Package] a package object whose importer is a git
         #   importer. The git commit is created in this repository
         # @param [String] path the file to be created or updated, relative to

@@ -44,7 +44,6 @@ module Autoproj
                     assert_equal [['some_gem', artifacts: [[true, 'artifact/path'], [false, 'some/other']]]],
                                  options[:gems_compile]
                 end
-
             end
 
             describe '#parse_gem_compile' do
@@ -76,25 +75,25 @@ module Autoproj
                 end
 
                 it 'detects a missing closing bracket' do
-                    e = assert_raises(ArgumentError) do
+                    assert_raises(ArgumentError) do
                        @cli.parse_gem_compile('some_gem[+some')
                     end
                 end
 
                 it 'detects a single opening bracket at the end' do
-                    e = assert_raises(ArgumentError) do
+                    assert_raises(ArgumentError) do
                        @cli.parse_gem_compile('some_gem[')
                     end
                 end
 
                 it 'detects a missing +/-' do
-                    e = assert_raises(ArgumentError) do
+                    assert_raises(ArgumentError) do
                        @cli.parse_gem_compile('some_gem[bla]')
                     end
                 end
 
                 it 'detects an empty [] specification' do
-                    e = assert_raises(ArgumentError) do
+                    assert_raises(ArgumentError) do
                        @cli.parse_gem_compile('some_gem[]')
                     end
                 end

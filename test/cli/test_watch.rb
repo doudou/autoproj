@@ -46,7 +46,7 @@ module Autoproj
                     @pkg = ws_add_package_to_layout :cmake, 'package'
                     @pkg_set = ws.manifest.main_package_set
                     @ros_manifest_file = File.join(pkg.autobuild.srcdir,
-                        'package.xml')
+                                                   'package.xml')
                     @manifest_file = File.join(pkg.autobuild.srcdir,
                                                'manifest.xml')
                     @autobuild_file = File.join(pkg_set.raw_local_dir,

@@ -102,14 +102,14 @@ module Autoproj
                     PackageSet.resolve_definition(ws, 'dir')
                 end
                 assert_equal "'dir' is neither a remote source specification, nor an existing local directory",
-                    e.message
+                             e.message
             end
             it "raises if given a full path that does not exist" do
                 e = assert_raises(ArgumentError) do
                     PackageSet.resolve_definition(ws, '/full/dir')
                 end
                 assert_equal "'/full/dir' is neither a remote source specification, nor an existing local directory",
-                    e.message
+                             e.message
             end
         end
 
@@ -162,7 +162,7 @@ module Autoproj
                     package_set.normalize_vcs_list('version_control', '/path/to/file', nil)
                 end
                 assert_equal "wrong format for the version_control section of /path/to/file",
-                    e.message
+                             e.message
             end
 
             it "converts a number to a string using convert_to_nth" do
@@ -185,10 +185,10 @@ module Autoproj
                 #
                 # is loaded as { 'package_name' => nil, 'type' => 'git' }
                 assert_equal [['package_name', Hash['type' => 'git']]],
-                    package_set.normalize_vcs_list(
-                        'section', 'file', [
-                            Hash['package_name' => nil, 'type' => 'git']
-                        ])
+                             package_set.normalize_vcs_list(
+                                 'section', 'file', [
+                                     Hash['package_name' => nil, 'type' => 'git']
+                                 ])
             end
 
             it "normalizes the YAML loaded from a properly formatted source file" do
@@ -197,26 +197,26 @@ module Autoproj
                 #
                 # is loaded as { 'package_name' => { 'type' => 'git' } }
                 assert_equal [['package_name', Hash['type' => 'git']]],
-                    package_set.normalize_vcs_list(
-                        'section', 'file', [
-                            Hash['package_name' => Hash['type' => 'git']]
-                        ])
+                             package_set.normalize_vcs_list(
+                                 'section', 'file', [
+                                     Hash['package_name' => Hash['type' => 'git']]
+                                 ])
             end
 
             it "accepts a package_name: none shorthand" do
                 assert_equal [['package_name', Hash['type' => 'none']]],
-                    package_set.normalize_vcs_list(
-                        'section', 'file', [
-                            Hash['package_name' => 'none']
-                        ])
+                             package_set.normalize_vcs_list(
+                                 'section', 'file', [
+                                     Hash['package_name' => 'none']
+                                 ])
             end
 
             it "converts the package name into a regexp if it contains non-standard characters" do
                 assert_equal [[/^test.*/, Hash['type' => 'none']]],
-                    package_set.normalize_vcs_list(
-                        'section', 'file', [
-                            Hash['test.*' => 'none']
-                        ])
+                             package_set.normalize_vcs_list(
+                                 'section', 'file', [
+                                     Hash['test.*' => 'none']
+                                 ])
             end
 
             it "raises InvalidYAMLFormatting for a package name without a specification" do
@@ -250,7 +250,7 @@ module Autoproj
                     PackageSet.raw_description_file('/path/to/package_set', package_set_name: 'name_of_package_set')
                 end
                 assert_equal "package set name_of_package_set present in /path/to/package_set should have a source.yml file, but does not",
-                    e.message
+                             e.message
             end
             it "handles empty files gracefully" do
                 dir = make_tmpdir
@@ -343,9 +343,9 @@ module Autoproj
                 original_vcs = VCSDefinition.from_raw({ type: 'git', url: 'https://github.com' })
                 package_set.add_raw_imported_set(original_vcs, auto_imports: false)
                 assert_loads_value 'imports_vcs',
-                    [[VCSDefinition.from_raw('type' => 'local', 'url' => 'path/to/package'), Hash[auto_imports: false]]],
-                    [[original_vcs, Hash[auto_imports: false]]],
-                    source_definition: Hash['imports' => Array[Hash['type' => 'local', 'url' => 'path/to/package', 'auto_imports' => false]]]
+                                   [[VCSDefinition.from_raw('type' => 'local', 'url' => 'path/to/package'), Hash[auto_imports: false]]],
+                                   [[original_vcs, Hash[auto_imports: false]]],
+                                   source_definition: Hash['imports' => Array[Hash['type' => 'local', 'url' => 'path/to/package', 'auto_imports' => false]]]
             end
 
             it "expands constants in the imports" do
@@ -377,9 +377,9 @@ module Autoproj
             it "loads the constant definitions" do
                 package_set.add_constant_definition 'VAL', '10'
                 assert_loads_value 'constants_definitions',
-                    Hash['VAL' => '20'],
-                    Hash['VAL' => '10'],
-                    source_definition: Hash['constants' => Hash['VAL' => '20']]
+                                   Hash['VAL' => '20'],
+                                   Hash['VAL' => '10'],
+                                   source_definition: Hash['constants' => Hash['VAL' => '20']]
             end
 
             it "cross-expands the constant definitions" do
@@ -387,7 +387,7 @@ module Autoproj
                     'constants' => Hash['A' => '10',
                                         'B' => "20$A"])
                 assert_equal Hash['A' => '10', 'B' => '2010'],
-                    package_set.constants_definitions
+                             package_set.constants_definitions
             end
 
             it "expands configuration variables from the workspace when expanding the constants" do
@@ -395,7 +395,7 @@ module Autoproj
                 package_set.parse_source_definition(
                     'constants' => Hash['B' => "20$A"])
                 assert_equal Hash['B' => '2010'],
-                    package_set.constants_definitions
+                             package_set.constants_definitions
             end
 
             it "normalizes the version control list" do
@@ -458,7 +458,7 @@ module Autoproj
                     package_set.raw_description_file
                 end
                 assert_equal "source git:https://url has not been fetched yet, cannot load description for it",
-                    e.message
+                             e.message
             end
             it "passes the package set's name to PackageSet.raw_description_file" do
                 dir = make_tmpdir
@@ -466,12 +466,12 @@ module Autoproj
                     with(dir, package_set_name: 'name_of_package_set').
                     once.pass_thru
                 package_set = PackageSet.new(ws, VCSDefinition.from_raw('type' => 'local', 'url' => dir),
-                                            name: 'name_of_package_set')
+                                             name: 'name_of_package_set')
                 e = assert_raises(ConfigError) do
                     package_set.raw_description_file
                 end
                 assert_equal "package set name_of_package_set present in #{dir} should have a source.yml file, but does not",
-                    e.message
+                             e.message
             end
         end
 
@@ -535,7 +535,7 @@ module Autoproj
                     package_set.version_control_field(
                         'package', [
                             [flexmock(to_s: "something", "===": true),
-                                      { 'test url' => 'test' }]
+                             { 'test url' => 'test' }]
                         ], section: 'test_section'
                     )
                 end
@@ -553,9 +553,8 @@ module Autoproj
                 end
                 assert(e.message.start_with?(
                     "invalid resulting VCS definition for package 'package'"),
-                    "unexpected message '#{e.message}'")
+                       "unexpected message '#{e.message}'")
             end
         end
     end
 end
-

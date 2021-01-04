@@ -16,11 +16,11 @@ module Autoproj
                     base_types = ws_add_package_to_layout :cmake, 'base/types'
                     base_cmake = ws_add_package_to_layout :cmake, 'base/cmake'
                     assert_equal [[Autoproj::Query::PARTIAL, base_cmake], [Autoproj::Query::PARTIAL, base_types]],
-                        cli.find_all_matches(Autoproj::Query.parse('name~base'),
-                                             [base_cmake, base_types])
+                                 cli.find_all_matches(Autoproj::Query.parse('name~base'),
+                                                      [base_cmake, base_types])
                     assert_equal [[Autoproj::Query::EXACT, base_cmake]],
-                        cli.find_all_matches(Autoproj::Query.parse('name=base/cmake'),
-                                             [base_cmake])
+                                 cli.find_all_matches(Autoproj::Query.parse('name=base/cmake'),
+                                                      [base_cmake])
                 end
             end
 
@@ -204,8 +204,8 @@ TEST FORMAT pkg os_indep test3
                     package.autobuild.prefix = prefix = File.join(ws.root_dir, 'prefix')
                     package.vcs = VCSDefinition.from_raw(type: 'local', url: '/test')
                     assert_equal "base/cmake #{srcdir} #{prefix} 0 /test false",
-                        cli.format_source_package("$NAME $SRCDIR $PREFIX $PRIORITY $URL $PRESENT",
-                                          0, package)
+                                 cli.format_source_package("$NAME $SRCDIR $PREFIX $PRIORITY $URL $PRESENT",
+                                                           0, package)
                 end
 
                 it "raises if BUILDDIR is used on packages that don't have it" do
@@ -217,7 +217,7 @@ TEST FORMAT pkg os_indep test3
                     package.vcs = VCSDefinition.from_raw(type: 'local', url: '/test')
                     exception = assert_raises(ArgumentError) do
                         cli.format_source_package("$NAME $SRCDIR $BUILDDIR $PREFIX $PRIORITY $URL $PRESENT",
-                                          0, package)
+                                                  0, package)
                     end
                     assert_equal "cannot find a definition for $BUILDDIR", exception.message
                 end
@@ -225,5 +225,3 @@ TEST FORMAT pkg os_indep test3
         end
     end
 end
-
-

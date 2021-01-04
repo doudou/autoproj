@@ -67,7 +67,7 @@ module Autoproj
         # @param [String] current_value the option's current value
         # @param [String] doc a string to override the default option banner
         def ask(current_value, doc = nil)
-            value,_ = ensure_value(current_value)
+            value, _ = ensure_value(current_value)
 
             STDOUT.print "  #{doc || self.doc} [#{value}] "
             STDOUT.flush
@@ -76,7 +76,6 @@ module Autoproj
                 answer = value
             end
             validate(answer)
-
         rescue InputError => e
             Autoproj.message("invalid value: #{e.message}", :red)
             retry
@@ -116,4 +115,3 @@ module Autoproj
         end
     end
 end
-

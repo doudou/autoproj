@@ -20,12 +20,14 @@ module Autoproj
                         if !packages.include?(package_name) # something is wrong, fallback to installing everything
                             return packages
                         end
+
                         new_packages << package_name
-                    else 
+                    else
                         package_name = line.strip
                         if !packages.include?(package_name) # something is wrong, fallback to installing everything
                             return packages
                         end
+
                         installed_packages << package_name
                     end
                 end
@@ -57,4 +59,3 @@ module Autoproj
         end
     end
 end
-

@@ -89,14 +89,13 @@ module Autoproj
             overrides[option_name] = value
         end
 
-        # Remove a specific override
-        def reset_overrides(name)
-            @overrides.delete(name)
-        end
-
         # Remove all overrides
-        def reset_overrides
-            @overrides.clear
+        def reset_overrides(*names)
+            if names.empty?
+                @overrides.clear
+            else
+                names.each { |n| @overrides.delete(n) }
+            end
         end
 
         # Tests whether a value is set for the given option name
@@ -125,10 +124,6 @@ module Autoproj
                 end
             else
                 if validated
-                    doc = declared_options[key].short_doc
-                    if doc[-1, 1] != "?"
-                        doc = "#{doc}:"
-                    end
                     displayed_options[key] = value
                     value.dup
                 else
@@ -325,7 +320,7 @@ module Autoproj
         # Verify that the Ruby executable that is being used to run autoproj
         # matches the one expected in the configuration
         def validate_ruby_executable
-            actual   = OSPackageResolver.autodetect_ruby_program
+            actual = OSPackageResolver.autodetect_ruby_program
             if has_value_for?('ruby_executable')
                 expected = get('ruby_executable')
                 if expected != actual
@@ -482,6 +477,7 @@ module Autoproj
             elsif has_value_for?("interactive")
                 return get('interactive')
             end
+
             true
         end
 

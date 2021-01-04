@@ -339,7 +339,7 @@ module Autoproj
                 test_dep = InstallationManifest::Package.new(
                     'test_dep', 'Autobuild::CMake',
                     Hash[type: 'none', url: nil], "#{srcdir}/test_dep", "#{srcdir}/test_dep",
-                         '/prefix/test_dep', '/builddir/test_dep', test_dep.autobuild.logdir, [])
+                    '/prefix/test_dep', '/builddir/test_dep', test_dep.autobuild.logdir, [])
                 pkg = InstallationManifest::Package.new(
                     'pkg', 'Autobuild::CMake',
                     Hash[type: 'none', url: nil], "#{srcdir}/pkg", "#{srcdir}/pkg",

@@ -15,7 +15,7 @@ task 'bootstrap' do
     autoproj_ops_install = File.read(File.join(Dir.pwd, 'lib', 'autoproj', 'ops', 'install.rb'))
     # Since we are using gsub to replace the content in the bootstrap file,
     # we have to quote all \
-    autoproj_ops_install.gsub! /\\/, '\\\\\\\\'
+    autoproj_ops_install.gsub!(/\\/, '\\\\\\\\')
 
     %w{bootstrap install}.each do |install_script|
         bootstrap_code = File.read(File.join(Dir.pwd, 'bin', "autoproj_#{install_script}.in")).

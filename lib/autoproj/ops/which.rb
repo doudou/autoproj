@@ -10,7 +10,7 @@ module Autoproj
         # `cmd` is not executable. Otherwise, looks for an executable named
         # `cmd` in PATH and returns it, or raises if it cannot be found. The
         # exception contains a more detailed reason for failure
-        # 
+        #
         #
         # @param [String] cmd
         # @return [String] the resolved program

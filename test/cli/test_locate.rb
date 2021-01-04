@@ -16,31 +16,31 @@ module Autoproj
             describe "#validate_options" do
                 it "transforms the prefix: true CLI option into a run mode" do
                     assert_equal [['test'], Hash[test: 10, mode: :prefix_dir]],
-                        cli.validate_options(['test'], Hash[test: 10, prefix: true])
+                                 cli.validate_options(['test'], Hash[test: 10, prefix: true])
                 end
                 it "transforms the build: true CLI option into a run mode" do
                     assert_equal [['test'], Hash[test: 10, mode: :build_dir]],
-                        cli.validate_options(['test'], Hash[test: 10, build: true])
+                                 cli.validate_options(['test'], Hash[test: 10, build: true])
                 end
                 it "removes prefix: false from the options" do
                     assert_equal [['test'], Hash[test: 10, mode: :source_dir]],
-                        cli.validate_options(['test'], Hash[test: 10, prefix: false])
+                                 cli.validate_options(['test'], Hash[test: 10, prefix: false])
                 end
                 it "removes build: false from the options" do
                     assert_equal [['test'], Hash[test: 10, mode: :source_dir]],
-                        cli.validate_options(['test'], Hash[test: 10, build: false])
+                                 cli.validate_options(['test'], Hash[test: 10, build: false])
                 end
                 it "removes both prefix: false and build: false from the options" do
                     assert_equal [['test'], Hash[test: 10, mode: :source_dir]],
-                        cli.validate_options(['test'], Hash[test: 10, prefix: false, build: false])
+                                 cli.validate_options(['test'], Hash[test: 10, prefix: false, build: false])
                 end
                 it "returns the only argument" do
                     assert_equal [['test'], Hash[test: 10, mode: :source_dir]],
-                        cli.validate_options(['test'], Hash[test: 10])
+                                 cli.validate_options(['test'], Hash[test: 10])
                 end
                 it "'selects' the workspace root dir if no arguments are given" do
                     assert_equal [[ws.root_dir], Hash[test: 10, mode: :source_dir]],
-                        cli.validate_options([], Hash[test: 10])
+                                 cli.validate_options([], Hash[test: 10])
                 end
             end
 
@@ -118,7 +118,7 @@ module Autoproj
                 before do
                     @pkg = InstallationManifest::Package.new(
                         'pkg', 'Autobuild::CMake', Hash.new, '/srcdir', '/srcdir',
-                                                             '/prefix', '/builddir', [])
+                        '/prefix', '/builddir', [])
                     installation_manifest.add_package(pkg)
                     cli.update_from_installation_manifest(installation_manifest)
                 end
@@ -149,7 +149,7 @@ module Autoproj
                     expected = %w{test0 test1}.map do |pkg_name|
                         pkg = InstallationManifest::Package.new(
                             pkg_name, 'Autobuild::CMake', Hash.new, '/srcdir', '/srcdir',
-                                                                    '/prefix', '/builddir', [])
+                            '/prefix', '/builddir', [])
                         installation_manifest.add_package(pkg)
                     end
                     cli.update_from_installation_manifest(installation_manifest)
@@ -158,12 +158,12 @@ module Autoproj
                 it "ignores regexp-based matches if there are exact matches" do
                     test0 = InstallationManifest::Package.new(
                         'pkg0', 'Autobuild::CMake', Hash.new, '/srcdir', '/srcdir',
-                                                              '/prefix', '/builddir', []
+                        '/prefix', '/builddir', []
                     )
                     installation_manifest.add_package(test0)
                     test1 = InstallationManifest::Package.new(
                         'pkg1', 'Autobuild::CMake', Hash.new, '/srcdir', '/srcdir',
-                                                              '/prefix', '/builddir', []
+                        '/prefix', '/builddir', []
                     )
                     installation_manifest.add_package(test1)
                     assert_equal [pkg], cli.find_packages('pkg')
@@ -209,7 +209,7 @@ module Autoproj
                     e = assert_raises(ArgumentError) do
                         cli.run([ws.root_dir], mode: :invalid)
                     end
-                    assert_match(/'#{:invalid}' was expected to be one of/, e.message)
+                    assert_match(/':invalid' was expected to be one of/, e.message)
                 end
 
                 it "does not load the configuration if initialized with an installation manifest" do
@@ -409,7 +409,7 @@ module Autoproj
                         cli.prefix_dir_of(selection)
                     end
                     assert_equal "#{selection} is a package set, and package sets do not have prefixes",
-                        e.message
+                                 e.message
                 end
                 it "returns a package's prefix directory" do
                     dir = flexmock
@@ -427,12 +427,12 @@ module Autoproj
                         cli.build_dir_of("#{ws.root_dir}/")
                     end
                     assert_equal "#{ws.root_dir}/ points to the workspace itself, which has no build dir",
-                        e.message
+                                 e.message
                     e = assert_raises(Locate::NoSuchDir) do
                         cli.build_dir_of("#{ws.prefix_dir}/")
                     end
                     assert_equal "#{ws.prefix_dir}/ points to the workspace itself, which has no build dir",
-                        e.message
+                                 e.message
                 end
                 it "raises NoSuchDir if given a package set" do
                     cli.should_receive(:find_package_set).with(selection = flexmock).and_return(flexmock)
@@ -440,7 +440,7 @@ module Autoproj
                         cli.build_dir_of(selection)
                     end
                     assert_equal "#{selection} is a package set, and package sets do not have build directories",
-                        e.message
+                                 e.message
                 end
                 it "returns a package's prefix directory" do
                     dir = flexmock
@@ -514,7 +514,7 @@ module Autoproj
                         cli.resolve_package('does/not/match')
                     end
                     assert_equal "cannot find 'does/not/match' in the current autoproj installation",
-                        e.message
+                                 e.message
                 end
                 describe "exact package resolution" do
                     it "returns a exactly resolved packages" do
@@ -537,9 +537,9 @@ module Autoproj
                         cli.should_receive(:find_packages).
                             with(selection = flexmock).
                             and_return([
-                                pkg = flexmock(name: 'pkg0', srcdir: '/pkg0'),
-                                flexmock(name: 'pkg1', srcdir: '/pkg1')
-                            ])
+                                           pkg = flexmock(name: 'pkg0', srcdir: '/pkg0'),
+                                           flexmock(name: 'pkg1', srcdir: '/pkg1')
+                                       ])
                         flexmock(File).should_receive(:directory?).and_return { |d| d == '/pkg0' }
                         assert_equal pkg, cli.resolve_package(selection)
                     end
@@ -567,9 +567,9 @@ module Autoproj
                             cli.should_receive(:find_packages_with_directory_shortnames).
                                 with(selection = flexmock).
                                 and_return([
-                                    pkg = flexmock(name: 'pkg0', srcdir: '/pkg0'),
-                                    flexmock(name: 'pkg1', srcdir: '/pkg1')
-                                ])
+                                               pkg = flexmock(name: 'pkg0', srcdir: '/pkg0'),
+                                               flexmock(name: 'pkg1', srcdir: '/pkg1')
+                                           ])
                             flexmock(File).should_receive(:directory?).and_return { |d| d == '/pkg0' }
                             assert_equal pkg, cli.resolve_package(selection)
                         end
@@ -579,4 +579,3 @@ module Autoproj
         end
     end
 end
-

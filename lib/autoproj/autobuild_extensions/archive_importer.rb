@@ -35,10 +35,9 @@ module Autoproj
                 else
                     result['url'] = @url.to_s
                 end
-                
+
                 result
             end
         end
     end
 end
-

@@ -19,4 +19,3 @@ Autobuild::CMake.show_make_messages = true
 # handler will remove installed files that are not part of the package anymore.
 Autoproj.config.separate_prefixes = true
 Autobuild::CMake.delete_obsolete_files_in_prefix = Autoproj.config.separate_prefixes?
-

@@ -59,4 +59,3 @@ describe Autoproj do
         end
     end
 end
-

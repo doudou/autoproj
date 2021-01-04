@@ -38,17 +38,17 @@ module Autoproj
                     pips = [pips]
                 end
 
-                base_cmdline = [Autobuild.tool('pip'), 'install','--user']
+                base_cmdline = [Autobuild.tool('pip'), 'install', '--user']
 
                 cmdlines = [base_cmdline + pips]
 
                 if pips_interaction(pips, cmdlines)
-                    Autoproj.message "  installing/updating Python dependencies: "+
-                        "#{pips.sort.join(", ")}"
+                    Autoproj.message "  installing/updating Python dependencies: " +
+                                     "#{pips.sort.join(", ")}"
 
                     cmdlines.each do |c|
                         Autobuild::Subprocess.run 'autoproj', 'osdeps', *c,
-                            env: ws.env.resolved_env
+                                                  env: ws.env.resolved_env
                     end
 
                     pips.each do |p|
@@ -56,7 +56,7 @@ module Autoproj
                     end
                 end
             end
-            
+
             def pips_interaction(pips, cmdlines)
                 if OSPackageInstaller.force_osdeps
                     return true
@@ -89,4 +89,3 @@ module Autoproj
         end
     end
 end
-

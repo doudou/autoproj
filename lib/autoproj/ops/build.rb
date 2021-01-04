@@ -77,7 +77,6 @@ module Autoproj
                 build_packages(all_enabled_packages)
             end
 
-
             # Builds the listed packages
             #
             # Only build steps that are actually needed will be performed. See
@@ -103,7 +102,6 @@ module Autoproj
                     ) do |pkg, phase|
                         reporting&.report_incremental(pkg) if phase == 'build'
                     end
-
                 ensure
                     packages = all_enabled_packages.map do |name|
                         @manifest.find_autobuild_package(name)

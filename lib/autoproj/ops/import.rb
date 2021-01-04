@@ -301,8 +301,8 @@ module Autoproj
                             installed_vcs_packages.merge(
                                 install_vcs_packages_for(
                                     *missing_vcs,
-                                     install_only: import_options[:checkout_only],
-                                     **install_vcs_packages
+                                    install_only: import_options[:checkout_only],
+                                    **install_vcs_packages
                                 )
                             )
                             package_queue.concat(missing_vcs)
@@ -317,7 +317,6 @@ module Autoproj
                             break
                         else
                             main_thread_imports.delete_if do |pkg|
-                                # rubocop:disable Lint/HandleExceptions
                                 begin
                                     if retry_count
                                         pkg.autobuild.importer.retry_count = retry_count
@@ -327,7 +326,6 @@ module Autoproj
                                 rescue StandardError => e
                                 end
                                 completion_queue << [pkg, Time.now, result, e]
-                                # rubocop:enable Lint/HandleExceptions
                             end
                         end
                     end
@@ -529,11 +527,11 @@ module Autoproj
                 end
 
                 report = JSON.pretty_generate({
-                    import_report: {
-                        timestamp: Time.now,
-                        packages: packages
-                    }
-                })
+                                                  import_report: {
+                                                      timestamp: Time.now,
+                                                      packages: packages
+                                                  }
+                                              })
                 IO.write(@report_path, report)
             end
 

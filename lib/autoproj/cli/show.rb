@@ -94,7 +94,6 @@ module Autoproj
                     line_names.join(", ")
                 end
                 puts "    " + package_lines.join(",\n    ")
-
             end
 
             def display_source_package(pkg_name, default_packages, revdeps, options = Hash.new)

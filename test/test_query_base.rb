@@ -6,6 +6,7 @@ module Autoproj
             match_class = Class.new do
                 attr_reader :fields, :value
                 def partial?; @partial end
+
                 def initialize(fields, value, partial)
                     @fields, @value, @partial = fields, value, partial
                 end
@@ -82,4 +83,3 @@ module Autoproj
         end
     end
 end
-

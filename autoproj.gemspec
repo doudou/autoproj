@@ -1,4 +1,5 @@
 # coding: utf-8
+
 require 'rbconfig'
 
 lib = File.expand_path('../lib', __FILE__)
@@ -22,24 +23,23 @@ Gem::Specification.new do |s|
     s.executables = ['autoproj', 'aup', 'amake', 'alocate', 'alog']
     s.require_paths = ["lib"]
     s.extensions = []
-    s.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+    s.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
 
-    s.add_runtime_dependency "bundler"
     s.add_runtime_dependency "autobuild", ">= 1.21.0"
     s.add_runtime_dependency "backports", '~> 3.0'
-    s.add_runtime_dependency "utilrb", '~> 3.0.0', ">= 3.0.0"
-    s.add_runtime_dependency "thor", '~> 1.0'
+    s.add_runtime_dependency "bundler"
     s.add_runtime_dependency 'concurrent-ruby', '~> 1.1'
+    s.add_runtime_dependency 'rb-inotify' if RbConfig::CONFIG['target_os'] =~ /linux/
+    s.add_runtime_dependency "thor", '~> 1.0'
     s.add_runtime_dependency 'tty-color', '~> 0.5.0'
     s.add_runtime_dependency 'tty-prompt', '~> 0.21.0'
     s.add_runtime_dependency 'tty-spinner', '~> 0.9.0'
-    s.add_runtime_dependency 'rb-inotify' if RbConfig::CONFIG['target_os'] =~ /linux/
+    s.add_runtime_dependency "utilrb", '~> 3.0.0', ">= 3.0.0"
     s.add_runtime_dependency 'xdg', '= 2.2.5'
+    s.add_development_dependency "aruba"
     s.add_development_dependency "flexmock", '~> 2.0', ">= 2.0.0"
     s.add_development_dependency "minitest", "~> 5.0", ">= 5.0"
     s.add_development_dependency "simplecov"
-    s.add_development_dependency "aruba"
-    s.add_development_dependency "tty-cursor"
     s.add_development_dependency "timecop"
+    s.add_development_dependency "tty-cursor"
 end
-

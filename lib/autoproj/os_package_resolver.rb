@@ -639,12 +639,16 @@ module Autoproj
             Array(dep_def).each do |names, values|
                 if !values
                     entry_found, entry_nonexistent, entry_names =
-                        partition_osdep_raw_array_entry(names, osdep_name,
-                            handler_names, excluded, keys, additional_keys)
+                        partition_osdep_raw_array_entry(
+                            names, osdep_name,
+                            handler_names, excluded, keys, additional_keys
+                        )
                 else
                     entry_found, entry_nonexistent, entry_names =
-                        partition_osdep_map_entry(names, values, osdep_name,
-                            handler_names, excluded, keys, found_keys, additional_keys)
+                        partition_osdep_map_entry(
+                            names, values, osdep_name,
+                            handler_names, excluded, keys, found_keys, additional_keys
+                        )
                 end
                 found ||= entry_found
                 nonexistent ||= entry_nonexistent
@@ -694,8 +698,9 @@ module Autoproj
                     [false, false, []]
                 end
             elsif names.respond_to?(:to_hash)
-                rec_found, rec_result = partition_osdep_entry(osdep_name,
-                    names, handler_names, excluded, keys, *additional_keys)
+                rec_found, rec_result = partition_osdep_entry(
+                    osdep_name, names, handler_names, excluded, keys, *additional_keys
+                )
                 if rec_found == FOUND_NONEXISTENT
                     [false, true, rec_result]
                 elsif rec_found == FOUND_PACKAGES

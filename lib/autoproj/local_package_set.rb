@@ -47,7 +47,7 @@ module Autoproj
         # Load the files in overrides.d in addition to the overrides: field in
         # the yaml file
         def load_overrides(source_definition)
-            files = Dir.glob(File.join( ws.overrides_dir, "*.yml" ) ).sort
+            files = Dir.glob(File.join(ws.overrides_dir, "*.yml")).sort
             overrides = files.map do |file|
                 source_data = Autoproj.in_file(file, Autoproj::YAML_LOAD_ERROR) do
                     YAML.load(File.read(file)) || Array.new

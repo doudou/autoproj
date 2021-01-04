@@ -26,6 +26,7 @@ module Autoproj
 
         def filter_load_exception(error, package_set, path)
             raise error if Autoproj.verbose
+
             rx_path = Regexp.quote(path)
             if error_line = error.backtrace.find { |l| l =~ /#{rx_path}/ }
                 if line_number = Integer(/#{rx_path}:(\d+)/.match(error_line)[1])
@@ -75,7 +76,7 @@ module Autoproj
                     Kernel.load path
                 rescue Interrupt
                     raise
-                rescue ConfigError => e
+                rescue ConfigError
                     raise
                 rescue Exception => e
                     filter_load_exception(e, pkg_set, path)
@@ -95,6 +96,7 @@ module Autoproj
 
         def import_autobuild_file(package_set, path)
             return if @loaded_autobuild_files.include?(path)
+
             load(package_set, path)
             @loaded_autobuild_files << path
         end
@@ -107,4 +109,3 @@ module Autoproj
     end
     end
 end
-

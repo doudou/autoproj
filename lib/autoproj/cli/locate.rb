@@ -11,7 +11,7 @@ module Autoproj
         class Locate < InspectionTool
             attr_reader :packages
             attr_reader :package_sets
-            
+
             class NotFound < CLIException; end
             class NoSuchDir < CLIException; end
 
@@ -246,12 +246,13 @@ module Autoproj
             #
             # The workspace is resolved as the main configuration
             #
-            # If 'log' is nil and multiple logs are available, 
+            # If 'log' is nil and multiple logs are available,
             def logs_of(selection, log: nil)
                 if workspace_dir?(selection) || (pkg_set = find_package_set(selection))
                     if log && log != 'import'
                         return []
                     end
+
                     name = if pkg_set then pkg_set.name
                            else "autoproj main configuration"
                            end
@@ -294,4 +295,3 @@ module Autoproj
         end
     end
 end
-

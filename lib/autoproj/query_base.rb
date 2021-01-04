@@ -57,7 +57,7 @@ module Autoproj
         # @api private
         #
         # Parse a single field in a query (i.e. a FIELD[=~]VALUE string)
-        # 
+        #
         # This is NOT meant to be used directly. Subclasses are supposed to
         # redefine .parse to create the relevant match object.
         def self.parse(str, allowed_fields: [], default_fields: Hash.new)
@@ -97,9 +97,11 @@ module Autoproj
             def initialize(submatches)
                 @submatches = submatches
             end
+
             def each_subquery(&block)
                 @submatches.each(&block)
             end
+
             def match(pkg)
                 @submatches.map { |m| m.match(pkg) }.compact.max
             end
@@ -110,9 +112,11 @@ module Autoproj
             def initialize(submatches)
                 @submatches = submatches
             end
+
             def each_subquery(&block)
                 @submatches.each(&block)
             end
+
             def match(pkg)
                 matches = @submatches.map do |m|
                     if p = m.match(pkg)
@@ -125,4 +129,3 @@ module Autoproj
         end
     end
 end
-

@@ -16,7 +16,6 @@ module Autoproj
             EXPECTED_ROOT_ENTRIES = [".", "..", "autoproj_bootstrap",
                                      ".autoproj", "bootstrap.sh", ENV_FILENAME].to_set
 
-
             def check_root_dir_empty?
                 (ENV['AUTOPROJ_NONINTERACTIVE'] != '1') &&
                     (ENV['AUTOPROJ_BOOTSTRAP_IGNORE_NONEMPTY_DIR'] != '1')
@@ -30,7 +29,7 @@ module Autoproj
             def check_root_dir_empty
                 require 'set'
                 curdir_entries = Dir.entries(ws.root_dir).map { |p| File.basename(p) }.to_set -
-                    EXPECTED_ROOT_ENTRIES
+                                 EXPECTED_ROOT_ENTRIES
                 return if curdir_entries.empty?
 
                 while true
@@ -145,8 +144,8 @@ module Autoproj
                 else
                     # We will have to delete the current autoproj directory. Ask the user.
                     opt = Autoproj::BuildOption.new("delete current config", "boolean",
-                                Hash[:default => "false",
-                                    :doc => "delete the current configuration ? (required to switch)"], nil)
+                                                    Hash[:default => "false",
+                                                         :doc => "delete the current configuration ? (required to switch)"], nil)
 
                     return if !opt.ask(nil)
 
@@ -217,7 +216,6 @@ module Autoproj
                 # Save the new options
                 ws.config.set "manifest_source", vcs_def.dup, true
                 ws.config.save
-
             rescue Exception => e
                 Autoproj.error "switching configuration failed: #{e.message}"
                 if backup_name
@@ -234,5 +232,3 @@ module Autoproj
         end
     end
 end
-
-

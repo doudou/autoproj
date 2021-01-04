@@ -91,7 +91,7 @@ module Autoproj
             it "returns a default string if there is no documentation at all" do
                 manifest = Autoproj::PackageManifest.parse(pkg, "<package></package>")
                 assert_equal "no documentation available for package 'test' in its manifest.xml file",
-                    manifest.documentation
+                             manifest.documentation
             end
 
             it "loads the content of the short documentation attribute" do
@@ -101,7 +101,7 @@ module Autoproj
             it "returns a default string if there is no brief documentation" do
                 manifest = Autoproj::PackageManifest.parse(pkg, "<package><documentation>long</documentation></package>")
                 assert_equal "no documentation available for package 'test' in its manifest.xml file",
-                    manifest.short_documentation
+                             manifest.short_documentation
             end
             it "reports if there is no brief documentation" do
                 manifest = Autoproj::PackageManifest.parse(pkg, "<package><documentation>long</documentation></package>")
@@ -317,24 +317,24 @@ module Autoproj
                 manifest.add_dependency 'mandatory'
                 manifest.add_dependency 'optional', optional: true
                 assert_equal Set[['mandatory', false], ['optional', true]],
-                    manifest.each_dependency.to_set
+                             manifest.each_dependency.to_set
             end
             it "does not yield dependencies restricted to certain modes if the mode is not provided" do
                 manifest.add_dependency 'test', modes: ['doc']
                 assert_equal Set[],
-                    manifest.each_dependency.to_set
+                             manifest.each_dependency.to_set
             end
             it "does yield dependencies that have no mode restriction a mode is provided" do
                 manifest.add_dependency 'general'
                 manifest.add_dependency 'doc', modes: ['doc']
                 assert_equal Set[['general', false], ['doc', false]],
-                    manifest.each_dependency(['doc']).to_set
+                             manifest.each_dependency(['doc']).to_set
             end
             it "does yield dependencies restricted to certain modes if the mode is provided" do
                 manifest.add_dependency 'test', modes: ['test']
                 manifest.add_dependency 'doc_and_test', modes: ['doc', 'test']
                 assert_equal Set[['test', false], ['doc_and_test', false]],
-                    manifest.each_dependency(['test']).to_set
+                             manifest.each_dependency(['test']).to_set
             end
         end
 
@@ -367,12 +367,12 @@ module Autoproj
                 it "returns a default string if there is no documentation at all" do
                     manifest = subject_parse("<package></package>")
                     assert_equal "no documentation available for package 'test' in its manifest.xml file",
-                        manifest.documentation
+                                 manifest.documentation
                 end
                 it "returns a default string if there is no brief documentation" do
                     manifest = subject_parse("<package><documentation>long</documentation></package>")
                     assert_equal "no documentation available for package 'test' in its manifest.xml file",
-                        manifest.short_documentation
+                                 manifest.short_documentation
                 end
                 it "reports if there is no brief documentation" do
                     manifest = subject_parse("<package><documentation>long</documentation></package>")
@@ -443,7 +443,7 @@ module Autoproj
             end
         end
 
-        #def test_complete_manifest
+        # def test_complete_manifest
         #    deps = [['dep1', false], ['dep2', false]]
         #    opt_deps = [['opt_dep1', true], ['opt_dep2', true]]
         #    osdeps = [['osdep1', false]]
@@ -458,9 +458,9 @@ module Autoproj
 
         #    assert_equal('the_url', manifest.url)
         #    assert_equal('BSD', manifest.license)
-        #end
+        # end
 
-        #def test_empty_manifest
+        # def test_empty_manifest
         #    data = File.join(DATA_DIR, 'empty_manifest.xml')
         #    manifest = Autoproj::PackageManifest.load(pkg, data)
 
@@ -475,18 +475,15 @@ module Autoproj
 
         #    assert_equal(nil, manifest.url)
         #    assert_equal(nil, manifest.license)
-        #end
+        # end
 
-        #def test_failure_on_wrong_document
+        # def test_failure_on_wrong_document
         #    data = File.join(DATA_DIR, 'invalid_manifest.xml')
         #    assert_raises(Autobuild::PackageException) { Autoproj::PackageManifest.load(pkg, data) }
-        #end
+        # end
     end
 end
 
 class TC_PackageManifest < Minitest::Test
-
     DATA_DIR = File.expand_path('data', File.dirname(__FILE__))
-
 end
-

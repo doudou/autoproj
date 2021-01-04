@@ -90,5 +90,3 @@ module Autoproj
     # Raised by 'which' when an executable cannot be found
     class ExecutableNotFound < ArgumentError; end
 end
-
-

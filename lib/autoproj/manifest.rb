@@ -3,7 +3,7 @@ require 'csv'
 require 'utilrb/kernel/options'
 require 'set'
 
-require 'win32/dir' if RbConfig::CONFIG["host_os"] =~%r!(msdos|mswin|djgpp|mingw|[Ww]indows)!
+require 'win32/dir' if RbConfig::CONFIG["host_os"] =~ %r!(msdos|mswin|djgpp|mingw|[Ww]indows)!
 
 module Autoproj
     # The Manifest class represents the information included in the main
@@ -240,6 +240,7 @@ module Autoproj
                 if require_existing && !has_package?(package)
                     raise PackageNotFound, "no package named #{package} in #{self}"
                 end
+
                 package
             end
         end
@@ -299,6 +300,7 @@ module Autoproj
         # @yieldparam [Autobuild::Package]
         def each_ignored_package
             return enum_for(__method__) if !block_given?
+
             cache_ignored_package_names.each do |pkg_name|
                 yield(find_autobuild_package(pkg_name))
             end
@@ -320,7 +322,7 @@ module Autoproj
 
             if !explicitely_selected_in_layout?(package_name) && excluded_in_manifest?(package_name)
                 true
-            elsif automatic_exclusions.any? { |pkg_name, | pkg_name == package_name }
+            elsif automatic_exclusions.any? { |pkg_name,| pkg_name == package_name }
                 true
             else
                 false
@@ -330,6 +332,7 @@ module Autoproj
         # Enumerates the package names of all ignored packages
         def each_excluded_package
             return enum_for(__method__) if !block_given?
+
             each_autobuild_package do |pkg|
                 yield(pkg) if excluded?(pkg.name)
             end
@@ -529,6 +532,7 @@ module Autoproj
         # @yieldparam [PackageDefinition] pkg
         def each_package_definition(&block)
             return enum_for(__method__) if !block_given?
+
             packages.each_value(&block)
         end
 
@@ -537,6 +541,7 @@ module Autoproj
         # @yieldparam [Autobuild::Package] pkg
         def each_autobuild_package
             return enum_for(__method__) if !block_given?
+
             each_package_definition { |pkg| yield(pkg.autobuild) }
         end
 
@@ -547,13 +552,13 @@ module Autoproj
         #   we want to compute the importer definition. Pass package.package_set
         #   if you want to avoid applying any override
         # @return [VCSDefinition] the VCS definition object
-        def importer_definition_for(package, _package_set = nil, mainline: nil, require_existing: true, package_set: nil)
-            if _package_set
+        def importer_definition_for(package, old_package_set = nil, mainline: nil, require_existing: true, package_set: nil)
+            if old_package_set
                 Autoproj.warn_deprecated "calling #importer_definition_for with the package set as second argument is deprecated, use the package_set: keyword argument instead"
                 require_existing = false
             end
             package_name = validate_package_name_argument(package, require_existing: require_existing)
-            package_set = _package_set || package_set || package.package_set
+            package_set = old_package_set || package_set || package.package_set
             mainline = if mainline == true
                            package_set
                        else mainline
@@ -576,6 +581,7 @@ module Autoproj
             package_sets[(index + 1)..-1].inject(vcs) do |updated_vcs, pkg_set|
                 updated_vcs = pkg_set.overrides_for(package_name, updated_vcs, require_existing: false)
                 return updated_vcs if pkg_set == mainline
+
                 updated_vcs
             end
         end
@@ -748,32 +754,32 @@ module Autoproj
         #   fallback defined with {#add_osdeps_overrides}.
         #   If true, it will return it as an osdep.
         def resolve_package_name_as_osdep(name)
-	    osdeps_availability = os_package_resolver.availability_of(name)
-            if osdeps_availability == OSPackageResolver::NO_PACKAGE
-                raise PackageNotFound, "#{name} is not an osdep"
-            end
+        osdeps_availability = os_package_resolver.availability_of(name)
+        if osdeps_availability == OSPackageResolver::NO_PACKAGE
+            raise PackageNotFound, "#{name} is not an osdep"
+        end
 
-            # There is an osdep definition for this package, check the
-            # overrides
-            osdeps_available =
-                (osdeps_availability == OSPackageResolver::AVAILABLE) ||
-                (osdeps_availability == OSPackageResolver::IGNORE)
-            osdeps_overrides = self.osdeps_overrides[name]
-            if osdeps_overrides && (!osdeps_available || osdeps_overrides[:force])
-                return osdeps_overrides[:packages].inject([]) do |result, src_pkg_name|
-                    result.concat(resolve_package_name_as_source_package(src_pkg_name))
-                end.uniq
-            elsif !osdeps_available && (pkg = find_autobuild_package(name))
-                return [[:package, pkg.name]]
-            elsif osdeps_available || accept_unavailable_osdeps?
-                return [[:osdeps, name]]
-            elsif osdeps_availability == OSPackageResolver::WRONG_OS
-                raise PackageUnavailable, "#{name} is an osdep, but it is not available for this operating system (#{os_package_resolver.operating_system})"
-            elsif osdeps_availability == OSPackageResolver::UNKNOWN_OS
-                raise PackageUnavailable, "#{name} is an osdep, but the local operating system is unavailable"
-            elsif osdeps_availability == OSPackageResolver::NONEXISTENT
-                raise PackageUnavailable, "#{name} is an osdep, but it is explicitely marked as 'nonexistent' for this operating system (#{os_package_resolver.operating_system})"
-            end
+        # There is an osdep definition for this package, check the
+        # overrides
+        osdeps_available =
+            (osdeps_availability == OSPackageResolver::AVAILABLE) ||
+            (osdeps_availability == OSPackageResolver::IGNORE)
+        osdeps_overrides = self.osdeps_overrides[name]
+        if osdeps_overrides && (!osdeps_available || osdeps_overrides[:force])
+            return osdeps_overrides[:packages].inject([]) do |result, src_pkg_name|
+                result.concat(resolve_package_name_as_source_package(src_pkg_name))
+            end.uniq
+        elsif !osdeps_available && (pkg = find_autobuild_package(name))
+            return [[:package, pkg.name]]
+        elsif osdeps_available || accept_unavailable_osdeps?
+            return [[:osdeps, name]]
+        elsif osdeps_availability == OSPackageResolver::WRONG_OS
+            raise PackageUnavailable, "#{name} is an osdep, but it is not available for this operating system (#{os_package_resolver.operating_system})"
+        elsif osdeps_availability == OSPackageResolver::UNKNOWN_OS
+            raise PackageUnavailable, "#{name} is an osdep, but the local operating system is unavailable"
+        elsif osdeps_availability == OSPackageResolver::NONEXISTENT
+            raise PackageUnavailable, "#{name} is an osdep, but it is explicitely marked as 'nonexistent' for this operating system (#{os_package_resolver.operating_system})"
+        end
         end
 
         def find_metapackage(name)
@@ -937,6 +943,7 @@ module Autoproj
                 all_package_names.each do |pkg_name|
                     package_type, package_name = resolve_single_package_name(pkg_name).first
                     next if excluded?(package_name) || ignored?(package_name)
+
                     result.select(package_name, package_name, osdep: (package_type == :osdeps))
                 end
                 result
@@ -996,6 +1003,7 @@ module Autoproj
                 if !pkg_definition
                     raise ArgumentError, "#{pkg} is not a known package in #{self}"
                 end
+
                 pkg = pkg_definition
             end
             package, package_set = pkg.autobuild, pkg.package_set
@@ -1009,7 +1017,7 @@ module Autoproj
                     "no package.xml file" unless File.file?(manifest_path)
 
                 manifest = PackageManifest.load(package, manifest_path,
-                    ros_manifest: true)
+                                                ros_manifest: true)
             else
                 manifest_paths = [File.join(package.srcdir, "manifest.xml")]
                 if package_set.local_dir
@@ -1021,7 +1029,7 @@ module Autoproj
                 end
                 if manifest_path
                     manifest = PackageManifest.load(package, manifest_path,
-                        ros_manifest: false)
+                                                    ros_manifest: false)
                 end
             end
 

@@ -1,6 +1,6 @@
 module Autoproj
     module PackageManagers
-        #Package manger for OpenSuse and Suse (untested)
+        # Package manger for OpenSuse and Suse (untested)
         class ZypperManager < ShellScriptManager
             def initialize(ws)
                 super(ws, true,
@@ -14,7 +14,7 @@ module Autoproj
 
                 if !has_all_pkgs
                     return packages # let zypper filter, we need root now anyways
-                else 
+                else
                     return []
                 end
             end
@@ -44,4 +44,3 @@ module Autoproj
         end
     end
 end
-

@@ -12,4 +12,3 @@ describe Autoproj do
         assert_equal "$CONST", Autoproj.single_expansion("\\$CONST", Hash.new)
     end
 end
-
