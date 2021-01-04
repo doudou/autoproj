@@ -294,11 +294,11 @@ module Autoproj
         packages anyway, and/or change to the osdeps handling mode by running an
         autoproj operation with the --reconfigure option as for instance
         autoproj build --reconfigure
-        
+#{'        '}
         The following command line can be used to install them manually
-        
+#{'        '}
           #{cmdlines.map { |c| c.join(" ") }.join("\n      ")}
-        
+#{'        '}
         Autoproj expects these Gems to be installed in #{GemManager.gem_home} This can
         be overridden by setting the AUTOPROJ_GEM_HOME environment variable manually
 

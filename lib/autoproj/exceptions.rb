@@ -8,6 +8,7 @@ module Autoproj
             @file = file
         end
     end
+
     class InternalError < RuntimeError; end
 
     class ImportFailed < Autobuild::CompositeException

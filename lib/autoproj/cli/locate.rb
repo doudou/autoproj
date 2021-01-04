@@ -13,6 +13,7 @@ module Autoproj
             attr_reader :package_sets
 
             class NotFound < CLIException; end
+
             class NoSuchDir < CLIException; end
 
             # Create the locate CLI interface

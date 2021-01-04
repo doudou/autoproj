@@ -146,7 +146,7 @@ module Autoproj
             end
 
             def create_or_update_gems(keep_going: true, compile_force: false, compile: [])
-                # Note: this might directly copy into the cache directoy, and
+                # NOTE: this might directly copy into the cache directoy, and
                 # we support it later
                 cache_dir = File.join(@ws.prefix_dir, 'gems', 'vendor', 'cache')
                 PackageManagers::BundlerManager.run_bundler(

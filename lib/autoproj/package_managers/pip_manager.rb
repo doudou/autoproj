@@ -72,9 +72,9 @@ module Autoproj
       #{Autoproj.color("The build process and/or the packages require some Python packages to be installed", :bold)}
       #{Autoproj.color("and you required autoproj to not do it itself", :bold)}
         The following command line can be used to install them manually
-        
+#{'        '}
           #{cmdlines.map { |c| c.join(" ") }.join("\n      ")}
-        
+#{'        '}
         Autoproj expects these Python packages to be installed in #{pip_home} This can
         be overridden by setting the AUTOPROJ_PYTHONUSERBASE environment variable manually
 
